@@ -1,0 +1,24 @@
+{% load static %}
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}"/>
+        {% block style %} {% endblock %}
+       <title>
+            {% block title %} {% endblock %}
+       </title>
+
+    </head>
+    <body>
+
+        <h3>
+            CC4401 - Ingenier&iacute;a de Software
+        </h3>
+
+        {% block content %} {% endblock %}
+
+        <p class='exampleclass'>
+            Pie de p&aacute;gina.
+        </p>
+
+    </body>
+</html>
