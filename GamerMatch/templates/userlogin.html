@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}"/>
+{% endblock %}
+
+{% block title %} LOGIN {% endblock %}
+
+{% block content %}
+
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <p class="er">{{error}}</p>
+        {% endfor %}
+    {% endif %}
+    {% for fm in form %}
+        {{fm.label_tag}} {{fm}} {{fm.errors|striptags}} <br><br>
+    {% endfor %}
+    <input type="submit", value="Login">
+</form>
+    <a href="{% url 'signup' %}">Signup</a>
+
+{% endblock %}
