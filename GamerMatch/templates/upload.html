@@ -11,8 +11,45 @@
 
 {% block content %}
 
-<h3 class='uploadclass'>
-    Aqu&iacute; va el formulario para hacer una publicaci&oacute;n, por mientras que no haga nada, solo diseño.
-</h3>
+     <!DOCTYPE html>
+     <html lang="en">
+     <head>
+         <link rel="stylesheet" type="text/css" href="{% static 'css/upload.css' %}"/>
+        <meta charset="UTF-8">
+        <title> Nueva publicación </title>
+     </head>
+     <body>
+        <h1> Nueva publicación </h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="center">
+                <label class ="leyenda">Juego</label>
+                <select type="text" id=nombre_juego name="juego" required>
+                <option class="disabled" value=""> Elige un juego </option>
+                    <option value="lol">League of Legends</option>
+                    <option value="fortnite">Fortnite</option>
+                    <option value="ssb">Super Smash Bros.</option>
+                    <option value="minecraft">Minecraft</option>
+                </select>
+            </div>
+
+            <div class="center">
+                <label class ="leyenda">Tags</label>
+                <input type="text" class="form-control" id="tags" name="tags" required>
+            </div>
+
+             <div class="center">
+                <label class ="leyenda">Descripción</label>
+                <textarea id="descripción" name="descripción" required>
+                </textarea>
+             </div>
+
+             <div class="center">
+                <button type="submit">Publicar</button>
+                <button type="cancel">Cancelar</button>
+             </div>
+        </form>
+     </body>
+     </html>
 
 {% endblock %}
