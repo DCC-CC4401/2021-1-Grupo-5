@@ -10,15 +10,16 @@
     </head>
     <body>
 
-        <h3>
-            CC4401 - Ingenier&iacute;a de Software
-        </h3>
+        <div class="flex-container">
+        <div class="flex-container2">
+        <div><img src="{% static 'img/joystick.png' %}" width="100" height="100"></div>
+        <div><h1>GamerMatch </h1></div>
+        </div>
+
+        {% block login %} {% endblock %}
+        </div>
 
         {% block content %} {% endblock %}
-
-        <p class='exampleclass'>
-            Pie de p&aacute;gina.
-        </p>
 
     </body>
 </html>
