@@ -1,18 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/profile.css"/>
-</head>
-<body>
-<!--GamerMatch navbar, temporarily it'll be a green bar-->
-<div class="dummy_green">
-    <div>
-        GamerMatch
-    </div>
-</div><br><br>
+{% extends "base.html" %}
 
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css'%}"/>
+{% endblock %}
+
+{% block title %} Profile settings {% endblock %}
+
+{% block content %}
 <div class="section_title">Tu perfil</div>
 <div class="profile_nav"> <!--labels-->
     <div class="active_tab profile_nav_tab" id="tab_ajustes_de_cuenta">
@@ -139,6 +136,4 @@
     });
 
 </script>
-
-</body>
-</html>
+{% endblock %}
