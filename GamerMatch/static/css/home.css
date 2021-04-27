@@ -1,8 +1,4 @@
 
-h1 {
-    font-size: 40px;
-}
-
 .homeclass {
     background-color: hotpink;
 }
@@ -16,22 +12,12 @@ h1 {
     color:white;
 }
 
-.flex-container {
-    display: flex;
-    padding: 10px;
-    justify-content: space-between;
-    background-color: #64b628;
-}
 
-.flex-container2 {
-    display: flex;
-}
 
 .flex-container3 {
     display: flex;
     padding: 10px;
     justify-content: space-around;
-    background-color: #3b3b3b;
 }
 
 .flex-container4 {
@@ -52,7 +38,6 @@ h1 {
 
 .faq {
     text-align: center;
-    background-color: #3b3b3b;
     padding: 40px;
     font-size: 18px;
 }

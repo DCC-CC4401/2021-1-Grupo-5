@@ -9,23 +9,20 @@
 
 {% block title %} HOME {% endblock %}
 
-{% block content %}
+{% block login %}
 
-    <div class="flex-container">
-    <div class="flex-container2">
-    <div><img src="{% static 'img/joystick.png' %}" width="100" height="100"></div>
-    <div><h1>GamerMatch </h1></div>
-    </div>
-    <div><button type="button" class="login" onclick="location.href='login/'">Iniciar Sesión</button></div>
-    </div>
+    <div><button type="button" class="login" onclick="location.href='userlogin/'">Iniciar Sesión</button></div>
 
+    {% endblock %}
+
+    {% block content %}
     <div class="flex-container3 white">
     <div><img src="{% static 'img/lol.png' %}" width="200" height="200"></div>
 
     <div class="flex-container4">
     <h2>¡¡Bienvenido a GamerMatch!!</h2>
     <h1>¿Es tu primera vez aquí?</h1>
-    <div><button type="button" class="login" onclick="location.href='register/'">¡Regístrate!</button></div>
+    <div><button type="button" class="login" onclick="location.href='signup/'">¡Regístrate!</button></div>
     </div>
 
     <div><img src="{% static 'img/minecraft.png' %}" width="200" height="200"></div>
@@ -43,8 +40,5 @@
     </div>
 
 
-<h3 class='titleClass'>
-
-</h3>
 
 {% endblock %}
