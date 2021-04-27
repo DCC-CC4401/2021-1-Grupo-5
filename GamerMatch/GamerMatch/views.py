@@ -44,6 +44,14 @@ def home_profile(request):
     else:
         return HttpResponseRedirect('/')
 
+
+def profile_settings(request):
+    if request.user.is_authenticated:
+        return render(request, 'profile_settings.html')
+    else:
+        return HttpResponseRedirect('/')
+
+
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/userlogin/')

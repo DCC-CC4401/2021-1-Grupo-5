@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css'%}"/>
+{% endblock %}
+
+{% block title %} Profile settings {% endblock %}
+
+{% block content %}
+<div class="section_title">Tu perfil</div>
+<div class="profile_nav"> <!--labels-->
+    <div class="active_tab profile_nav_tab" id="tab_ajustes_de_cuenta">
+        Ajustes de Cuenta
+    </div>
+    <div class="inactive_tab profile_nav_tab" id="tab_juegos_favoritos">
+        Juegos favoritos
+    </div>
+    <div class="inactive_tab profile_nav_tab" id="tab_tags_favoritos">
+        Tags favoritos
+    </div>
+</div>
+
+<div><!--Content div, with possible contents. The one that is selected -->
+    <div id="body_ajustes_de_cuenta">
+        <div class="content_body">  <!--Ajustes de cuenta-->
+            <div class="row">
+                <div class="text_label">Nombre de Usuario:</div> <div class="text_value">Load username</div>
+            </div>
+            <div class="content_body">
+                <div class="text_label">Cambiar contraseña:</div>
+                <div>
+                    <div class="row spaced">
+                        <label for="old_pass" class="text_label">Contraseña Antigua: </label> <input type="password" name="profile_old_password" id="old_pass">
+                    </div>
+                    <div class="row spaced">
+                        <label for="new_pass" class="text_label">Contraseña Nueva: </label> <input type="password" name="profile_new_password" id="new_pass">
+                    </div>
+                    <div class="row spaced">
+                        <label for="new_pass2" class="text_label">Confirmar Contraseña: </label> <input type="password" name="profile_confirm_new_password" id="new_pass2">
+                    </div>
+                </div>
+                <button>Cambiar Contraseña</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="body_juegos_favoritos" class="inactive_content">
+        <div class="content_body" >  <!--Juegos Favoritos-->
+            <div>
+                <div class="row">
+                    <img src="../static/img/star_on.png" width="15px">  <!--Star-->
+                    <img>  <!--Game Icon-->
+                    <div>  <!--Description-->
+                        League of Legends
+                    </div>
+                </div>
+                <div class="row">
+                    <img src="../static/img/star_off.png" width="15px">  <!--Star-->
+                    <img>  <!--Game Icon-->
+                    <div>  <!--Description-->
+                        Minecraft
+                    </div>
+                </div>
+                <div class="row">
+                    <img src="../static/img/star_off.png" width="15px">  <!--Star-->
+                    <img>  <!--Game Icon-->
+                    <div>  <!--Description-->
+                        Super Smash Bros. Ultimate
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="body_tags_favoritos" class="inactive_content">
+        <div class="content_body" >  <!--Tags Favoritos-->
+            <div class="row">
+                <label for="new_tags" class="text_label">Nuevos tags:</label>
+                <input type="text" id="new_tags" name="nuevos_tags">
+                <button>Agregar</button>
+            </div>
+            <div class="row">
+                <div class="text_label">Tus tags: </div>
+                <div class="whiteboard">
+                    <div class="sticker">#flamer <img></div>
+                    <div class="sticker">#challenger <img></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let body_ajustes = document.getElementById('body_ajustes_de_cuenta');
+    let body_juegos = document.getElementById('body_juegos_favoritos');
+    let body_tags = document.getElementById('body_tags_favoritos');
+
+    let selected_id = "tab_ajustes_de_cuenta";
+
+    document.getElementById('tab_ajustes_de_cuenta').addEventListener('click', function (e) {
+        if (selected_id !== 'tab_ajustes_de_cuenta') {
+            document.getElementById(selected_id).classList.replace('active_tab', 'inactive_tab');
+            selected_id = 'tab_ajustes_de_cuenta';
+            document.getElementById(selected_id).classList.replace('inactive_tab', 'active_tab');
+
+            body_ajustes.classList.remove('inactive_content');
+            body_juegos.classList.add('inactive_content');
+            body_tags.classList.add('inactive_content');
+        }
+    });
+    document.getElementById('tab_juegos_favoritos').addEventListener('click', function (e) {
+        if (selected_id !== 'tab_juegos_favoritos') {
+            document.getElementById(selected_id).classList.replace('active_tab', 'inactive_tab');
+            selected_id = 'tab_juegos_favoritos';
+            document.getElementById(selected_id).classList.replace('inactive_tab', 'active_tab');
+
+            body_ajustes.classList.add('inactive_content');
+            body_juegos.classList.remove('inactive_content');
+            body_tags.classList.add('inactive_content');
+        }
+    });
+    document.getElementById('tab_tags_favoritos').addEventListener('click', function (e) {
+        if (selected_id !== 'tab_tags_favoritos') {
+            document.getElementById(selected_id).classList.replace('active_tab', 'inactive_tab');
+            selected_id = 'tab_tags_favoritos';
+            document.getElementById(selected_id).classList.replace('inactive_tab', 'active_tab');
+
+            body_ajustes.classList.add('inactive_content');
+            body_juegos.classList.add('inactive_content');
+            body_tags.classList.remove('inactive_content');
+        }
+    });
+
+</script>
+{% endblock %}
