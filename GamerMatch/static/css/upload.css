@@ -1,3 +1,71 @@
 .uploadclass{
     background-color: yellowgreen;
 }
+
+select {
+  width: 30%;
+  padding: 6px 10px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+input[type=text] {
+  width: 30%;
+  padding: 6px 10px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+input[type=text]:focus {
+  border: 3px solid #555;
+}
+
+textarea {
+  width: 30%;
+  height: 100px;
+  padding: 6px 10px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border-radius: 4px;
+  vertical-align: top;
+}
+
+button[type=submit], button[type=cancel] {
+  background-color: #4CAF50;
+  border: 1px solid #242424;
+  color: white;
+  padding: 16px 32px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+button[type=cancel] {
+  background-color: #CDCCCB;
+  color: black;
+}
+
+.center {
+  text-align: center;
+}
+
+h1 {
+  color: white;
+  margin: 50px 0;
+  padding: 16px 100px;
+}
+
+.leyenda {
+  color: white;
+  width: 5%;
+  display: inline-block;
+  padding: 6px 10px;
+  margin: 8px 0;
+  text-align: right;
+}
+
+body {
+  background-color: #5F5F5F;
+}
