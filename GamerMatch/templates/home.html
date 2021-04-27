@@ -11,8 +11,40 @@
 
 {% block content %}
 
-<h3 class='homeclass'>
-    Este es el contenido del home.
+    <div class="flex-container">
+    <div class="flex-container2">
+    <div><img src="{% static 'img/joystick.png' %}" width="100" height="100"></div>
+    <div><h1>GamerMatch </h1></div>
+    </div>
+    <div><button type="button" class="login" onclick="location.href='login/'">Iniciar Sesión</button></div>
+    </div>
+
+    <div class="flex-container3 white">
+    <div><img src="{% static 'img/lol.png' %}" width="200" height="200"></div>
+
+    <div class="flex-container4">
+    <h2>¡¡Bienvenido a GamerMatch!!</h2>
+    <h1>¿Es tu primera vez aquí?</h1>
+    <div><button type="button" class="login" onclick="location.href='register/'">¡Regístrate!</button></div>
+    </div>
+
+    <div><img src="{% static 'img/minecraft.png' %}" width="200" height="200"></div>
+
+    </div>
+
+    <div class="flex-container3">
+    <div><img src="{% static 'img/overwatch.jpg' %}" width="200" height="200"></div>
+    <div><img src="{% static 'img/valorant.png' %}" width="230" height="230"></div>
+    <div><img src="{% static 'img/smash.png' %}" width="200" height="200"></div>
+    </div>
+
+    <div class="faq white">
+        <a href="faq/" style="color: #64b628">FAQ</a> | GamerMatch v1.0
+    </div>
+
+
+<h3 class='titleClass'>
+
 </h3>
 
 {% endblock %}
