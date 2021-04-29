@@ -76,3 +76,6 @@ def index(request):
 
 def new_publication(request):
     return render(request, "upload.html")
+
+def go_faq(request):
+    return render(request, "faq.html")
