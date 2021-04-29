@@ -1,0 +1,72 @@
+.left-div{
+    margin-top: 7%;
+    margin-left: 25%;
+    width: 400px;
+    float: left;
+    border-style: solid;
+    padding: 20px;
+    border: inset;
+}
+
+.right-div{
+    margin-top: 8%;
+    margin-right: 25%;
+    text-align: center;
+    width: 400px;
+    float: right;
+    border-style: solid;
+    padding: 20px;
+    border: inset;
+}
+
+.form-label{
+    color: white;
+    padding: 10px;
+}
+
+.login-button{
+    display: block;
+    margin: 0 auto;
+}
+
+.form-input{
+    width: 230px;
+}
+
+.login-message-cell{
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+.login-button-cell{
+    text-align: center;
+    padding-top: 30px;
+}
+
+.login-message{
+    color:white;
+    font-size: 40;
+}
+
+.register-message{
+    color:white;
+    font-size: 30;
+}
+
+.register-message-cell{
+    text-align: center;
+    padding-bottom: 40px;
+}
+
+.form-input-cell{
+    padding-top: 15px;
+}
+
+.table{
+    text-align: center;
+}
+
+.big-button{
+    margin-top: 40px;
+    margin-bottom: 20px;
+}

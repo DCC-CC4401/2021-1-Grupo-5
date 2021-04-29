@@ -3,30 +3,47 @@
 {% load static %}
 
 {% block style %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/userlogin.css' %}"/>
 {% endblock %}
 
 {% block title %} LOGIN {% endblock %}
 
-{% block navbarButton %}
-    <div>Perfil (ejemplo)</div>
-
-{% endblock %}
 
 {% block content %}
-
+<div class=left-div>
 <form action="" method="post" novalidate>
     {% csrf_token %}
-    {% if form.non_field_errors %}
-        {% for error in form.non_field_errors %}
-            <p class="er">{{error}}</p>
-        {% endfor %}
-    {% endif %}
-    {% for fm in form %}
-        {{fm.label_tag}} {{fm}} {{fm.errors|striptags}} <br><br>
-    {% endfor %}
-    <input type="submit", value="Login">
+    <table >
+        <tr>
+            <td class='login-message-cell' colspan='2'>
+                <h1 class='login-message'> Iniciar Sesión </h1>
+            </td>
+        </tr>
+        <tr>
+            <td>
+    <label class='form-label' for="id_username">Usuario:</label> 
+            </td>
+            <td class='form-input-cell'>
+    <input class='form-input' type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username">  <br><br>
+            </td>
+            </tr>
+        <tr>
+            <td>
+    <label class='form-label' for="id_password">Contraseña:</label> 
+        </td>  
+        <td class='form-input-cell'>
+    <input class='form-input' type="password" name="password" autocomplete="current-password" required id="id_password">  <br><br>
+</td>
+</tr>
+<tr><td class='login-button-cell' colspan='2'>
+    <input class='login-button' type="submit", value="Entrar">
+</td></tr>
+</table>
 </form>
-    <a href="{% url 'signup' %}">Signup</a>
+</div>
+<div class='right-div'> 
+    <h2 class='register-message'>¿No tienes una cuenta?</h2>
+    <button type="button" class="login big-button" onclick="location.href='signup/'">¡Regístrate!</button>
+</div>
 
 {% endblock %}
