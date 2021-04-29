@@ -1,3 +1,43 @@
-.homeclass{
+
+.homeclass {
     background-color: hotpink;
+}
+
+.title1 {
+    text-align: center;
+    color: black;
+}
+
+.white {
+    color:white;
+}
+
+
+
+.flex-container3 {
+    display: flex;
+    padding: 10px;
+    justify-content: space-around;
+}
+
+.flex-container4 {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.login {
+    padding: 20px;
+    background-color: #64b628;
+    border: 3px solid black;
+    font-size: 20px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.faq {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
 }

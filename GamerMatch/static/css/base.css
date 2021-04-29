@@ -1,3 +1,23 @@
+body {
+    background-color: #3b3b3b;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+.flex-container {
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+    background-color: #64b628;
+}
+
+.flex-container2 {
+    display: flex;
+}
+
+
 .exampleclass{
-    background-color: green;
+    background-color: #5100ff;
 }

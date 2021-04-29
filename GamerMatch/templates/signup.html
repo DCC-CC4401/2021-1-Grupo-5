@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}"/>
+{% endblock %}
+
+
+{% block title %} REGISTER {% endblock %}
+
+{% block navbarButton %}
+    <div>Perfil (ejemplo)</div>
+
+{% endblock %}
+
+{% block content %}
+
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+       {% for error in form.non_field_errors %}
+           <p class="er">{{error}}</p>
+       {% endfor %}
+    {% endif %}
+    {% for fm in form %}
+       {{fm.label_tag}} {{fm}} {{fm.errors|striptags}} <br><br>
+    {% endfor %}
+    <input type="submit" value="Submit">
+</form>
+{% if messages %}
+   {% for message in messages %}
+       <small {% if message.tags %} class="{{message.tags}}" {% endif %}></small>
+   {% endfor%}
+{% endif %}
+<a href="{% url 'userlogin' %}">Login</a>
+
+{% endblock %}
