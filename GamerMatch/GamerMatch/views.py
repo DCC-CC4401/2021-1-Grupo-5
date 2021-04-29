@@ -1,18 +1,21 @@
 from django.http import HttpResponse
+from django.template import Template, Context, loader
+import datetime
+from django.shortcuts import render
 
 
 def index(request):
-    return HttpResponse("Este es el home (tanto normal como de usuario! la url debe ser la misma)")
-
+    return render(request, "home.html")
+    
 def login(request):
-    return HttpResponse("Aquí va el formulario de login.")
+    return render(request, "login.html")
 
 def register(request):
-    return HttpResponse("Aquí va el formulario de registro.")
+    return render(request, "register.html")
 
 def profile(request):
-    return HttpResponse("Estas son las configuraciones de perfil.")
+    return render(request, "profile.html")
 
 def new_publication(request):
-    return HttpResponse("Aquí se manda una nueva publicación.")
+    return render(request, "upload.html")
 
