@@ -9,7 +9,14 @@
 {% block title %} Profile settings {% endblock %}
 
 {% block navbarButton %}
-    <div>Perfil (ejemplo)</div>
+    <div>
+        <a href={% url 'profile_settings' %}>
+            <div class="profile_icon"> <img src="../static/img/profile_icon.png" alt="profile_icon"> </div>
+        </a>
+        <a href={% url 'logout' %}>
+            <div class="profile_icon"> <img src="../static/img/logout_icon.png" alt="logout_icon"></div>
+        </a>
+    </div>
 
 {% endblock %}
 

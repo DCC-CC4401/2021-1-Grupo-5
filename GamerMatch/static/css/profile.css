@@ -1,3 +1,24 @@
 .profileclass{
     background-color: red;
 }
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    margin: auto;
+    display: block;
+}
+
+.profile_icon {
+    width: 40px;
+    height: 40px;
+
+    padding: 5px;
+    display: inline-flex;
+}
+
+.welcome {
+    font-size: 200%;
+    font-weight: normal;
+}

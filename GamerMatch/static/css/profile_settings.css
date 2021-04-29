@@ -11,6 +11,14 @@ img {
     display: block;
 }
 
+.profile_icon {
+    width: 40px;
+    height: 40px;
+
+    padding: 5px;
+    display: inline-flex;
+}
+
 input[type="password"] {
     background-color: #d2d1d1;
     border-radius: 7px;
