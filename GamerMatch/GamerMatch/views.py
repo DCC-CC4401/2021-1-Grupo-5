@@ -6,6 +6,8 @@ from .forms import SignUpForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.models import User
+from .models import MatchForm
 
 
 def sign_up(request):
@@ -75,4 +77,25 @@ def index(request):
 
 
 def new_publication(request):
-    return render(request, "upload.html")
+    if request.method == 'GET':  # Si estamos cargando la página
+        return render(request, "upload.html")  # Mostrar el template
+
+    elif request.method == 'POST':  # Si estamos recibiendo el form de registro
+
+        if request.user.is_authenticated:
+            pass
+
+        if True: # Reemplazar este if con el anterior para permitir solo ingreso de user que inicio sesion
+
+            # Tomar los elementos del formulario que vienen en request.POST
+            juego = request.POST['nombre_juego']
+            tags = request.POST['tags']
+            descripcion = request.POST['descripcion']
+            user = User.objects.get(pk=request.user.id)
+
+            # Crear el nuevo usuario
+            matchForm = MatchForm(juego=juego, tags=tags, descripcion=descripcion, user=user)
+            matchForm.save()
+
+            # Redireccionar la página /tareas
+            return HttpResponseRedirect('/home_profile')
