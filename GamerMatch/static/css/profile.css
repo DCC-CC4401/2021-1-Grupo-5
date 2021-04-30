@@ -2,117 +2,19 @@
     background-color: red;
 }
 
-.dummy_green {
-    background-color: #71c95dff;
-    width: 100%;
-    position: absolute;
-    top:0;
-    left:0;
-    height: 40px;
-}
-
-body {
-    background-color: #454545;
-}
-
-input[type="password"] {
-    background-color: #d2d1d1;
-    border-radius: 7px;
-    height: 20px;
-    margin: 2px;
-}
-
-.section_title {
-    font-weight: bold;
-    color: white;
-    font-size: 175%;
-    padding: 20px 0;
-}
-
-
-/*
-    navbar menu classes
-*/
-
-
-.profile_nav {
-    /*background: purple;*/
-    padding: 10px;
-    margin: 0 auto;
-    width: 80%;
-    display: flex;
-    justify-content: space-between;
-}
-
-/* Visualization of non active tabs*/
-.inactive_tab {
-    background: #666666;
-}
-/* Visualization of active tabs */
-.active_tab {
-    background: #999999;
-}
-/* Visualization of non active content */
-.inactive_content {
-    display: none;
-}
-.profile_nav_tab {
-    display: inline-block;
-    border-radius: 10px 10px 0 0;
-    color: white;
-    padding: 10px 30px;
-    text-decoration: none; /*los anclas vienen subrayados por defecto, para dar a entender que es un link. Con esto lo quitamos*/
-}.profile_nav_tab:hover{
-    background: #999999;
-}
-.profile_nav_tab:active{
-    background: white;
-    color: black;
-}
-
-/*
-    content classes
-*/
-
-.content_body {
+img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
     margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 50%;
+    display: block;
 }
 
-.row {
-    display: flex;
-    flex-direction: row;
-}
-.spaced {
-    justify-content: space-between;
-}
+.profile_icon {
+    width: 40px;
+    height: 40px;
 
-.text_label {
-    color: white;
-    font-weight: bold;
-}
-.text_value {
-    color: white;
-    font-weight: normal;
-}
-
-.whiteboard {
-    border-radius: 7px;
-    padding: 10px;
-    width: 100%;
-    background-color: #d2d1d1;
-}
-
-.sticker {
-    border-radius: 3px;
     padding: 5px;
-    margin: 5px;
-    width: fit-content;
-    background-color: white;
-    border-color: black;
-    display: flex;
-    flex-direction: row;
+    display: inline-flex;
 }
+
