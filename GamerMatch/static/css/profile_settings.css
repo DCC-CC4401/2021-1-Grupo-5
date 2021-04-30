@@ -1,0 +1,243 @@
+
+body {
+    background-color: #454545;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    margin: auto;
+    display: block;
+}
+
+.profile_icon {
+    width: 40px;
+    height: 40px;
+
+    padding: 5px;
+    display: inline-flex;
+}
+
+input[type="password"] {
+    background-color: #d2d1d1;
+    border-radius: 7px;
+    height: 20px;
+    margin: 2px;
+}
+
+.section_title {
+    font-weight: bold;
+    color: white;
+    font-size: 175%;
+    padding: 20px 0;
+}
+
+
+/*
+    navbar menu classes
+*/
+
+
+.profile_nav {
+    /*background: purple;*/
+    padding: 10px;
+    margin: 0 auto;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Visualization of non active tabs*/
+.inactive_tab {
+    background: #666666;
+}
+/* Visualization of active tabs */
+.active_tab {
+    background: #999999;
+}
+/* Visualization of non active content */
+.inactive_content {
+    display: none;
+}
+.profile_nav_tab {
+    display: inline-block;
+    border-radius: 10px 10px 0 0;
+    color: white;
+    padding: 10px 30px;
+    text-decoration: none; /*los anclas vienen subrayados por defecto, para dar a entender que es un link. Con esto lo quitamos*/
+}.profile_nav_tab:hover{
+    background: #999999;
+}
+.profile_nav_tab:active{
+    background: white;
+    color: black;
+}
+
+/*
+    content classes
+*/
+
+.content_body {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 50%;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+.spaced {
+    justify-content: space-between;
+}
+.centered {
+    justify-content: center;
+}
+
+.text_label {
+    color: white;
+    margin-right: 0.38em;
+    font-weight: bold;
+}
+.text_value {
+    color: white;
+    font-weight: normal;
+}
+
+.change_pass_button {
+    background: #45abbf;
+    font-weight: bold;
+    font-size: 125%;
+    margin: 10px;
+    padding: 12px;
+    color: #ffffff;
+}
+.change_pass_button:hover {
+    background: #5FD3EF;
+}
+
+/*
+Row of juegos favoritos
+*/
+.item_row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    margin-bottom: 5px;
+
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: #666666;
+}
+.selected_star_icon {
+    width: 10%;
+    max-width: 30px;
+    max-height: 30px;
+    vertical-align: middle;
+}
+.image_icon {
+    width: 20%;
+    max-width: 60px;
+    max-height: 60px;
+    vertical-align: middle;
+    padding: 5px;
+}
+.description_whiteboard {
+    background: #999999;
+    vertical-align: middle;
+    border-radius: 7px;
+    width: 60%;
+    max-height: 60px;
+    margin: 5px 5%;
+
+    padding: 15px;
+
+    font-size: 115%;
+}
+
+/*
+Tags favoritos
+*/
+.tag_favoritos_body {
+    padding: 40px;
+}
+.tag_boxes_row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    margin-bottom: 5px;
+}
+
+.tag_box_label {
+    color: white;
+    margin-right: 0.38em;
+    font-weight: bold;
+    width: 10%;
+}
+
+.tag_input {
+    background: whitesmoke;
+    color: #2962fa;
+    margin: 0 5px 0 0;
+    width: 80%;
+
+    height: 25px;
+    border-radius: 5px;
+    border-style: none;
+}
+.add_tag_button {
+    background: #64b628;
+    width: 10%;
+    height: 25px;
+    padding: 5px;
+    border-style: none;
+}
+.add_tag_button:hover {
+    background: #7ce033;
+    border-style: none;
+}
+.add_tag_button:active {
+    background: #adf678;
+    border-style: none;
+}
+
+.whiteboard {
+    background-color: #d2d1d1;
+    width: 90%;
+    min-height: 150px;
+    height: fit-content;
+
+    border-radius: 7px;
+    padding: 10px;
+}
+
+.sticker {
+    background-color: white;
+    color: #2962fa;
+
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 3px;
+
+    padding: 5px;
+    margin: 5px;
+    width: fit-content;
+
+    display: inline-flex;
+    max-inline-size: available;
+}
+
+.close_icon {
+    height: 15px;
+    width: 15px;
+    vertical-align: middle;
+    margin-left: 0.3em;
+}

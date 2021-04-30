@@ -3,14 +3,20 @@
 {% load static %}
 
 {% block style %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}"/>
-<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css'%}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile_settings.css' %}"/>
 {% endblock %}
 
 {% block title %} Profile settings {% endblock %}
 
 {% block navbarButton %}
-    <div>Perfil (ejemplo)</div>
+    <div>
+        <a href={% url 'profile_settings' %}>
+            <div class="profile_icon"> <img src="../static/img/profile_icon.png" alt="profile_icon"> </div>
+        </a>
+        <a href={% url 'logout' %}>
+            <div class="profile_icon"> <img src="../static/img/logout_icon.png" alt="logout_icon"></div>
+        </a>
+    </div>
 
 {% endblock %}
 
@@ -30,49 +36,76 @@
 
 <div><!--Content div, with possible contents. The one that is selected -->
     <div id="body_ajustes_de_cuenta">
-        <div class="content_body">  <!--Ajustes de cuenta-->
-            <div class="row">
-                <div class="text_label">Nombre de Usuario:</div> <div class="text_value">Load username</div>
-            </div>
+        <form method="post" id="change_password_form">  <!--Cambiar contraseña-->
+            {% csrf_token %}
+
             <div class="content_body">
-                <div class="text_label">Cambiar contraseña:</div>
+                <div class="row centered">
+                    <div class="text_label">Nombre de Usuario:</div> <div class="text_value">{{ user }}</div>
+                </div> <br>
+                <div class="text_label row centered">Cambiar contraseña:</div><br><br>
                 <div>
                     <div class="row spaced">
-                        <label for="old_pass" class="text_label">Contraseña Antigua: </label> <input type="password" name="profile_old_password" id="old_pass">
+                        <label for="old_pass" class="text_label">Contraseña Antigua: </label> <input type="password" name="old_password" id="old_pass">
                     </div>
                     <div class="row spaced">
-                        <label for="new_pass" class="text_label">Contraseña Nueva: </label> <input type="password" name="profile_new_password" id="new_pass">
+                        <label for="new_pass" class="text_label">Contraseña Nueva: </label> <input type="password" name="new_password1" id="new_pass">
                     </div>
                     <div class="row spaced">
-                        <label for="new_pass2" class="text_label">Confirmar Contraseña: </label> <input type="password" name="profile_confirm_new_password" id="new_pass2">
+                        <label for="new_pass2" class="text_label">Confirmar Contraseña: </label> <input type="password" name="new_password2" id="new_pass2">
                     </div>
                 </div>
-                <button>Cambiar Contraseña</button>
+                {% if messages %}
+                    <div>
+                        {% for message in messages %}
+                            <small {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</small>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                 <button id="change_password_form_btn" class="change_pass_button">Cambiar Contraseña</button>
             </div>
-        </div>
+        </form>
+
     </div>
 
     <div id="body_juegos_favoritos" class="inactive_content">
         <div class="content_body" >  <!--Juegos Favoritos-->
             <div>
-                <div class="row">
-                    <img src="../static/img/star_on.png" width="15px">  <!--Star-->
-                    <img>  <!--Game Icon-->
-                    <div>  <!--Description-->
+                <div class="item_row">
+                    <div class="selected_star_icon">
+                        <img src="../static/img/star_on.png">  <!--Star-->
+                    </div>
+
+                    <div class="image_icon">
+                        <img src="../static/img/lol.png">  <!--Game Icon-->
+                    </div>
+
+                    <div class="description_whiteboard">  <!--Description-->
                         League of Legends
                     </div>
                 </div>
-                <div class="row">
-                    <img src="../static/img/star_off.png" width="15px">  <!--Star-->
-                    <img>  <!--Game Icon-->
-                    <div>  <!--Description-->
+                <div class="item_row">
+                    <div class="selected_star_icon">
+                        <img src="../static/img/star_off.png" >  <!--Star-->
+                    </div>
+                    <div class="image_icon">
+                        <img src="../static/img/minecraft.png" >  <!--Game Icon-->
+                    </div>
+
+                    <div class="description_whiteboard">  <!--Description-->
                         Minecraft
                     </div>
                 </div>
-                <div class="row">
-                    <img src="../static/img/star_off.png" width="15px">  <!--Star-->
-                    <img>  <!--Game Icon-->
-                    <div>  <!--Description-->
+                <div class="item_row">
+                    <div class="selected_star_icon">
+                        <img src="../static/img/star_off.png">  <!--Star-->
+                    </div>
+
+                    <div class="image_icon">
+                        <img src="../static/img/smash.png">  <!--Game Icon-->
+                    </div>
+
+                    <div class="description_whiteboard">  <!--Description-->
                         Super Smash Bros. Ultimate
                     </div>
                 </div>
@@ -81,17 +114,33 @@
     </div>
 
     <div id="body_tags_favoritos" class="inactive_content">
-        <div class="content_body" >  <!--Tags Favoritos-->
-            <div class="row">
-                <label for="new_tags" class="text_label">Nuevos tags:</label>
-                <input type="text" id="new_tags" name="nuevos_tags">
-                <button>Agregar</button>
+        <div class="tag_favoritos_body" >  <!--Tags Favoritos-->
+            <div class="tag_boxes_row">
+                <label for="new_tags" class="tag_box_label">Nuevos tags:</label>
+                <input type="text" id="new_tags" name="nuevos_tags" class="tag_input">
+                <button type="button" class="add_tag_button">Agregar</button>
             </div>
-            <div class="row">
-                <div class="text_label">Tus tags: </div>
+            <div class="tag_boxes_row">
+                <div class="tag_box_label">Tus tags: </div>
                 <div class="whiteboard">
-                    <div class="sticker">#flamer <img></div>
-                    <div class="sticker">#challenger <img></div>
+                    <div class="sticker">
+                        <div>#flamer</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
+                    </div>
+                    <div class="sticker">
+                        <div>#challenger</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
+                    </div>
+                    <div class="sticker">
+                        <div>#help</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
+                    </div>
+                    <div class="sticker">
+                        <div>#rick</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
+                    </div>
+                    <div class="sticker">
+                        <div>#roll</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
+                    </div>
+                    <div class="sticker">
+                        <div>#xd</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -140,5 +189,21 @@
         }
     });
 
+</script>
+<script>
+    let submit_button = document.getElementById('change_password_form_btn');
+    submit_button.addEventListener('click', validate)
+
+    function validate() {
+        let new_pass = document.getElementsByName('new_password1')[0].value;
+        let new_pass_confirm = document.getElementsByName('new_password2')[0].value;
+
+        if (new_pass !== new_pass_confirm) {
+            console.log("Error, la nueva contraseña no coincide al confirmarla");
+            return;
+        }
+        document.getElementById('change_password_form').submit()
+
+    }
 </script>
 {% endblock %}
