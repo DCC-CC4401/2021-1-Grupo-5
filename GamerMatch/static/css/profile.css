@@ -10,6 +10,10 @@ img {
     display: block;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
 .profile_icon {
     width: 40px;
     height: 40px;
@@ -18,3 +22,22 @@ img {
     display: inline-flex;
 }
 
+.welcome {
+    font-size: 200%;
+    font-weight: normal;
+}
+
+.nueva_solicitud {
+    background: #b3b1b1;
+    padding: 5px 10px;
+    margin: 5px;
+    width: fit-content;
+
+    color: black;
+}
+.nueva_solicitud:hover {
+    background: #d5d3d3;
+}
+.nueva_solicitud:active {
+    background: white;
+}
