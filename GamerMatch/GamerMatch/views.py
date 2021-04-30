@@ -14,7 +14,7 @@ def sign_up(request):
     if request.method == "POST":
         fm = SignUpForm(request.POST)
         if fm.is_valid():
-            messages.success(request, 'Account Created Successfully!!!')
+            messages.success(request, '¡Cuenta creada exitosamente!')
             fm.save()
     else:
         fm = SignUpForm()
@@ -31,7 +31,7 @@ def sign_in(request):
                 user = authenticate(username=uname, password=upass)
                 if user is not None:
                     login(request, user)
-                    messages.success(request, 'Logged in successfully!!!')
+                    messages.success(request, '¡Autenticado exitosamente!')
                     return HttpResponseRedirect('/home_profile/')
         else:
             fm = AuthenticationForm()
