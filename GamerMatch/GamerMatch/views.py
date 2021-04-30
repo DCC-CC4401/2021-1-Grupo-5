@@ -71,7 +71,10 @@ def user_logout(request):
 
 
 def index(request):
-    return render(request, "home.html")
+    if request.user.is_authenticated:
+        return render(request, 'home_profile.html', {'name': request.user})
+    else:
+        return render(request, "home.html")
 
 
 def new_publication(request):

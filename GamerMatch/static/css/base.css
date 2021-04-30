@@ -4,6 +4,10 @@ body {
 
 h1 {
     font-size: 40px;
+    color: #ffffff;
+}
+label{
+     color: #ffffff;
 }
 
 .flex-container {
@@ -20,4 +24,17 @@ h1 {
 
 .exampleclass{
     background-color: #5100ff;
+}
+.welcome {
+    font-size: 200%;
+    font-weight: normal;
+    color: #ffffff;
+}
+p{color: #ffffff;}
+
+.er{color: #ffffff;}
+.message{color: #ffffff;}
+.GamerMatch{
+
+
 }
