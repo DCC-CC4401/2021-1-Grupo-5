@@ -10,6 +10,7 @@
 {% block title %} UPLOAD {% endblock %}
 
 {% block navbarButton %}
+
     <div>Perfil (ejemplo)</div>
 
 {% endblock %}
@@ -21,15 +22,15 @@
      <head>
          <link rel="stylesheet" type="text/css" href="{% static 'css/upload.css' %}"/>
         <meta charset="UTF-8">
-        <title> Nueva publicación </title>
+        <title> Nueva publicació </title>
      </head>
      <body>
-        <h1> Nueva publicación </h1>
+        <h2> Nueva publicación </h2>
         <form method="post">
             {% csrf_token %}
             <div class="center">
                 <label class ="leyenda">Juego</label>
-                <select type="text" id=nombre_juego name="juego" required>
+                <select type="text" id=nombre_juego name="nombre_juego" required>
                 <option class="disabled" value=""> Elige un juego </option>
                     <option value="lol">League of Legends</option>
                     <option value="fortnite">Fortnite</option>
@@ -40,12 +41,12 @@
 
             <div class="center">
                 <label class ="leyenda">Tags</label>
-                <input type="text" class="form-control" id="tags" name="tags" required>
+                <input type="text" id="tags" name="tags" required>
             </div>
 
              <div class="center">
                 <label class ="leyenda">Descripción</label>
-                <textarea id="descripción" name="descripción" required>
+                <textarea id="descripcion" name="descripcion" required>
                 </textarea>
              </div>
 
