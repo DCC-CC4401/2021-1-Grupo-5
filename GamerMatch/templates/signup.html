@@ -13,11 +13,6 @@
 <div class=left-div>
     <form action="" method="post" novalidate>
         {% csrf_token %}
-        {% if form.non_field_errors %}
-        {% for error in form.non_field_errors %}
-        <p class="er">{{error}}</p>
-        {% endfor %}
-        {% endif %}
         <table>
             <tr>
                 <td class='login-message-cell' colspan='2'>
@@ -80,15 +75,16 @@
                 </td>
             </tr>
         </table>
+        {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <p class="error-message">{{error}}</p>
+        {% endfor %}
+        {% endif %}
     </form>
 </div>
 <div class='right-div'>
     <h2 class='register-message'>¿Ya tienes una cuenta?</h2>
     <button type="button" class="login big-button" onclick="location.href='../userlogin/'">Iniciar Sesión</button>
 </div>
-{% if messages %}
-{% for message in messages %}
-<small {% if message.tags %} class="{{message.tags}}" {% endif %}></small>
-{% endfor%}
-{% endif %}
+
 {% endblock %}
