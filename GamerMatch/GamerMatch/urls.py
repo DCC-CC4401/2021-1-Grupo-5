@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from GamerMatch.views import index, sign_in, sign_up, home_profile, user_logout, new_publication, profile_settings
+from GamerMatch.views import index, sign_in, sign_up, home_profile, user_logout, new_publication, profile_settings, \
+    go_faq
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +27,5 @@ urlpatterns = [
     path('profile_settings/', profile_settings, name='profile_settings'),
     path('upload/', new_publication, name='upload'),
     path('logout/',user_logout,name='logout'),
+    path('faq/', go_faq),
 ]
