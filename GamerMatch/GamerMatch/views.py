@@ -78,8 +78,11 @@ def index(request):
     else:
         return render(request, "home.html")
 
+def go_faq(request):
+    return render(request, "faq.html")
 
 def new_publication(request):
+
     if request.method == 'GET':  # Si estamos cargando la página
         return render(request, "upload.html")  # Mostrar el template
 
