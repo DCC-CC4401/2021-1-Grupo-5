@@ -3,36 +3,88 @@
 {% load static %}
 
 {% block style %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/userlogin.css' %}" />
 {% endblock %}
 
 
-{% block title %} REGISTER {% endblock %}
-
-{% block navbarButton %}
-    <div>Perfil (ejemplo)</div>
-
-{% endblock %}
+{% block title %} Registrarse {% endblock %}
 
 {% block content %}
-
-<form action="" method="post" novalidate>
-    {% csrf_token %}
-    {% if form.non_field_errors %}
-       {% for error in form.non_field_errors %}
-           <p class="er">{{error}}</p>
-       {% endfor %}
-    {% endif %}
-    {% for fm in form %}
-       {{fm.label_tag}} {{fm}} {{fm.errors|striptags}} <br><br>
-    {% endfor %}
-    <input type="submit" value="Submit">
-</form>
-{% if messages %}
-   {% for message in messages %}
-       <small {% if message.tags %} class="{{message.tags}}" {% endif %}></small>
-   {% endfor%}
-{% endif %}
-<a href="{% url 'userlogin' %}">Login</a>
+<div class=left-div>
+    <form action="" method="post" novalidate>
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td class='login-message-cell' colspan='2'>
+                    <h1 class='login-message'> Regístrate </h1>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class='form-label' for="id_username">Usuario:</label>
+                </td>
+                <td class='form-input-cell'>
+                    <input type="text" name="username" maxlength="150" autofocus required id="id_username"> <br><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class='form-label' for="id_first_name">Nombre:</label>
+                </td>
+                <td class='form-input-cell'>
+                    <input type="text" name="first_name" maxlength="150" id="id_first_name"> <br><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class='form-label' for="id_last_name">Apellido:</label>
+                </td>
+                <td class='form-input-cell'>
+                    <input type="text" name="last_name" maxlength="150" id="id_last_name"> <br><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class='form-label' for="id_email">Email:</label>
+                </td>
+                <td class='form-input-cell'>
+                    <input type="email" name="email" maxlength="254" id="id_email"> <br><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class='form-label' for="id_password1">Contraseña:</label>
+                </td>
+                <td class='form-input-cell'>
+                    <input type="password" name="password1" autocomplete="new-password" required id="id_password1">
+                    <br><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class='form-label' for="id_password2">Confirmar contraseña:</label>
+                </td>
+                <td class='form-input-cell'>
+                    <input type="password" name="password2" autocomplete="new-password" required id="id_password2">
+                    <br><br>
+                </td>
+            </tr>
+            <tr>
+                <td class='login-button-cell' colspan='2'>
+                    <input type="submit" value="Registrarse">
+                </td>
+            </tr>
+        </table>
+        {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <p class="error-message">{{error}}</p>
+        {% endfor %}
+        {% endif %}
+    </form>
+</div>
+<div class='right-div'>
+    <h2 class='register-message'>¿Ya tienes una cuenta?</h2>
+    <button type="button" class="login big-button" onclick="location.href='../userlogin/'">Iniciar Sesión</button>
+</div>
 
 {% endblock %}
