@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block style %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/faq.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/faq.css' %}"/>
 {% endblock %}
 
 {% block title %} PROFILE {% endblock %}
@@ -11,10 +11,12 @@
 {% block navbarButton %}
     <div>
         <a href={% url 'profile_settings' %}>
-            <div class="profile_icon"> <img width="50" height=50" src="../static/img/profile_icon.png" alt="profile_icon"> </div>
+            <div class="profile_icon"><img width="50" height=50" src="../static/img/profile_icon.png"
+                                           alt="profile_icon"></div>
         </a>
         <a href={% url 'logout' %}>
-            <div class="profile_icon"> <img width="50" height="50" src="../static/img/logout_icon.png" alt="logout_icon"></div>
+            <div class="profile_icon"><img width="50" height="50" src="../static/img/logout_icon.png" alt="logout_icon">
+            </div>
         </a>
     </div>
 
@@ -22,10 +24,19 @@
 
 {% block content %}
 
-<div class="faq_title">
-<h1>FAQ</h1>
+    <div class="main">
+        <h1 style="text-align: center">FAQ</h1>
+        <br>
 
-ola
-</div>
+        <ul>
+            <li><b>¿Qué es GamerMatch?</b>
+                <br> Gamermatch es una aplicación para ayudarte a encontrar
+                compañeros para tus juegos favoritos, ¡solamente debes crearte
+                una cuenta y comienza a descubrir a otros jugadores!
+            </li>
+        </ul>
+
+
+    </div>
 
 {% endblock %}
