@@ -48,6 +48,8 @@ def home_profile(request):
 
 
 def profile_settings(request):
+    # possible query parameter: ?tab, cuyos valores pueden ser {'ajustes', 'juegos', 'tags'}
+    # pero es posible no recibir tab, lo que llevará a cargar la pestaña principal de esta página
     if request.user.is_authenticated:
         if request.method == 'POST':
             pass_form = PasswordChangeForm(data=request.POST, user=request.user)
@@ -56,15 +58,16 @@ def profile_settings(request):
                 pass_form.save()
                 update_session_auth_hash(request, pass_form.user)
                 messages.success(request, 'Password changed successfully')
+                return redirect('/profile_settings?tab=ajustes')
             elif 'tags' in request.POST:  # tags form
                 tags = request.POST['tags']
                 user = User.objects.get(pk=request.user.id)
                 personal_tags = PersonalTags(tags=tags, user=user)
                 personal_tags.save()
+                return redirect('/profile_settings?tab=tags')
 
             else:
                 messages.error(request, 'Unable to change your password. Invalid form.')
-
             return redirect('/profile_settings')
         else:
             tags = PersonalTags.tags.most_common()

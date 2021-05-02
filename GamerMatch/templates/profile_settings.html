@@ -23,7 +23,7 @@
 {% block content %}
 <div class="section_title">Tu perfil</div>
 <div class="profile_nav"> <!--labels-->
-    <div class="active_tab profile_nav_tab" id="tab_ajustes_de_cuenta">
+    <div class="inactive_tab profile_nav_tab" id="tab_ajustes_de_cuenta">
         Ajustes de Cuenta
     </div>
     <div class="inactive_tab profile_nav_tab" id="tab_juegos_favoritos">
@@ -35,7 +35,7 @@
 </div>
 
 <div><!--Content div, with possible contents. The one that is selected -->
-    <div id="body_ajustes_de_cuenta">
+    <div id="body_ajustes_de_cuenta" class="inactive_content">
         <form method="post" id="change_password_form">  <!--Cambiar contraseña-->
             {% csrf_token %}
 
@@ -120,17 +120,17 @@
     <div id="body_tags_favoritos" class="inactive_content">
         <div class="tag_favoritos_body" >  <!--Tags Favoritos-->
             <form method="post" id="tags_form">
+                {% csrf_token %}
                 <div class="tag_boxes_row">
-                    {#<input type="text" id="new_tags" name="nuevos_tags" class="tag_input">#}
-                    <label for="new_tags" {#class="tag_box_label"#}>Nuevos tags:</label>
-                    <input type="text" data-role="tagsinput" class="form-control"{# tag_input"#} name="tags" id="new_tags">
-                    <button type="button" {#class="add_tag_button"#} id="add_tag_button">Agregar</button>
+                    <label for="new_tags" class="tag_box_label">Nuevos tags:</label>
+                    <input type="text" data-role="tagsinput" class="tag_input" name="tags" id="new_tags">
+                    <button type="button" class="add_tag_button" id="add_tag_button">Agregar</button>
                 </div>
             </form>
-            {% csrf_token %}
             <div class="tag_boxes_row">
                 <div class="tag_box_label">Tus tags: </div>
                 <div class="whiteboard">
+                    <!--
                     <div class="sticker">
                         <div>#flamer</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
                     </div>
@@ -149,6 +149,7 @@
                     <div class="sticker">
                         <div>#xd</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
                     </div>
+                    -->
                 </div>
             </div>
         </div>
@@ -162,9 +163,9 @@
     let body_juegos = document.getElementById('body_juegos_favoritos');
     let body_tags = document.getElementById('body_tags_favoritos');
 
-    let selected_id = "tab_ajustes_de_cuenta";
+    let selected_id; //"tab_ajustes_de_cuenta";  // it will be initialized later
 
-    document.getElementById('tab_ajustes_de_cuenta').addEventListener('click', function (e) {
+    function tab_ajustes(e) {
         if (selected_id !== 'tab_ajustes_de_cuenta') {
             document.getElementById(selected_id).classList.replace('active_tab', 'inactive_tab');
             selected_id = 'tab_ajustes_de_cuenta';
@@ -174,8 +175,8 @@
             body_juegos.classList.add('inactive_content');
             body_tags.classList.add('inactive_content');
         }
-    });
-    document.getElementById('tab_juegos_favoritos').addEventListener('click', function (e) {
+    }
+    function tab_juegos(e) {
         if (selected_id !== 'tab_juegos_favoritos') {
             document.getElementById(selected_id).classList.replace('active_tab', 'inactive_tab');
             selected_id = 'tab_juegos_favoritos';
@@ -185,8 +186,8 @@
             body_juegos.classList.remove('inactive_content');
             body_tags.classList.add('inactive_content');
         }
-    });
-    document.getElementById('tab_tags_favoritos').addEventListener('click', function (e) {
+    }
+    function tab_tags() {
         if (selected_id !== 'tab_tags_favoritos') {
             document.getElementById(selected_id).classList.replace('active_tab', 'inactive_tab');
             selected_id = 'tab_tags_favoritos';
@@ -196,7 +197,34 @@
             body_juegos.classList.add('inactive_content');
             body_tags.classList.remove('inactive_content');
         }
-    });
+    }
+
+    // add tag button events
+    document.getElementById('tab_ajustes_de_cuenta').addEventListener('click', tab_ajustes);
+    document.getElementById('tab_juegos_favoritos').addEventListener('click', tab_juegos);
+    document.getElementById('tab_tags_favoritos').addEventListener('click', tab_tags);
+
+    // initialize the default tab
+    selected_id = 'tab_ajustes_de_cuenta';
+    const urlParams = new URLSearchParams(window.location.search);
+    switch (urlParams.get('tab')) {
+        case 'ajustes':
+            selected_id = 'tab_ajustes_de_cuenta';
+            body_ajustes.classList.remove('inactive_content'); break;
+        case 'juegos':
+            selected_id = 'tab_juegos_favoritos';
+            body_juegos.classList.remove('inactive_content'); break;
+        case 'tags':
+            selected_id = 'tab_tags_favoritos'
+            body_tags.classList.remove('inactive_content'); break;
+        default:  // ajustes again
+            selected_id = 'tab_ajustes_de_cuenta';
+            body_ajustes.classList.remove('inactive_content');
+    }
+    document.getElementById(selected_id).classList.replace('inactive_tab', 'active_tab');
+
+
+
 
 </script>
 <script>
@@ -218,7 +246,8 @@
     let submit_tags_button = document.getElementById('add_tag_button');
     submit_tags_button.addEventListener('click', function () {
         let form = document.getElementById('tags_form');
-        if (form.value !== null) {
+        if (document.getElementById('new_tags').value !== '') {
+            console.log("Se enviará la entrada");
             form.submit();
         } else {
             console.log("Error, la entrada de tags está vacía");
@@ -229,6 +258,6 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src="{% static 'js/tagsinput.js'%}"></script>
+{#<script src="{% static 'js/tagsinput.js'%}"></script>#}
 
 {% endblock %}
