@@ -189,7 +189,7 @@ Tags favoritos
 .add_tag_button {
     background: #64b628;
     width: 10%;
-    height: 25px;
+    height: max-content;
     padding: 5px;
     border-style: none;
 }

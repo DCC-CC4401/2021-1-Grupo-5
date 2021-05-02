@@ -17,7 +17,7 @@ class MatchForm(models.Model):
 class PersonalTags(models.Model):
     user = models.CharField(max_length=100, default='')
     tags = TaggableManager()
-    slug = models.SlugField(unique=True, max_length=100)
+    # slug = models.SlugField(unique=True, max_length=100)
     time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
