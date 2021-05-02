@@ -37,7 +37,14 @@ p{color: #ffffff;}
 .GamerMatch{
 
 }
-.section {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;}
+
+.page {
+    display:flex;
+    flex-direction: column;
+    height: 100vh;
+    min-height: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: hidden;}
+
+.footer-div{margin-top: auto}

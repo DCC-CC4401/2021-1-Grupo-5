@@ -23,6 +23,7 @@
 
     </head>
     <body>
+    <div class="page">
         <nav class = "navbar  navbar-dark" style="background-color: forestgreen;
                                                   flex-direction: row">
 
@@ -37,14 +38,13 @@
 
 
 
-
         {% block navbarButton %} {% endblock %}
 
         </nav>
-<div class="section">
+
         {% block content %} {% endblock %}
-</div>
-<section class="">
+<div class ="footer-div">
+<section class="footer">
   <!-- Footer -->
   <footer class="text-center text-white static-bottom" style="background-color: forestgreen;">
     <!-- Grid container -->
@@ -71,6 +71,8 @@
   </footer>
   <!-- Footer -->
 </section>
+    </div>
 
+</div>
     </body>
 </html>
