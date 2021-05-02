@@ -13,13 +13,13 @@ body {
 }
 
 .main {
-    background-color: #385757;
+    background-color: forestgreen;
     width: 50%;
     margin-left: 25%;
     padding: 20px;
     margin-top: 3%;
     border-radius: 20px;
-    box-shadow: #8bbea6 0 0 5px 6px;
+    box-shadow: #d1ffd1 0 0 5px 6px;
     font-size: 30px;
     text-align: justify;
 
