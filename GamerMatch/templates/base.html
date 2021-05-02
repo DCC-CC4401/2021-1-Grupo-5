@@ -22,29 +22,22 @@
        </title>
 
     </head>
-    <body>
-    <div class="page">
-        <nav class = "navbar  navbar-dark" style="background-color: forestgreen;
+<body>
+    <nav class = "navbar  navbar-dark" style="background-color: forestgreen;
                                                   flex-direction: row">
-
-             <a class="navbar-brand mb-0 h1" href="/" style="display: flex;
+        <a class="navbar-brand mb-0 h1" href="/" style="display: flex;
                                                                                  align-items: center;">
-                 <div>
-                 <img src="{% static 'img/joystick.png' %}" width="100" height="100">
-                 </div>
-                 <div class = "GamerMatch">Gamer Match</div>
-
-             </a>
-
-
-
-        {% block navbarButton %} {% endblock %}
-
+            <div>
+            <img src="{% static 'img/joystick.png' %}" width="100" height="100">
+            </div>
+            <div class = "GamerMatch">Gamer Match</div>
+        </a>
+            {% block navbarButton %} {% endblock %}
         </nav>
-
+<div class="section">
         {% block content %} {% endblock %}
-<div class ="footer-div">
-<section class="footer">
+
+<section class="">
   <!-- Footer -->
   <footer class="text-center text-white static-bottom" style="background-color: forestgreen;">
     <!-- Grid container -->
@@ -71,8 +64,6 @@
   </footer>
   <!-- Footer -->
 </section>
-    </div>
-
 </div>
     </body>
 </html>

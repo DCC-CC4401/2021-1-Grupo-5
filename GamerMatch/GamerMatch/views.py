@@ -7,14 +7,14 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import User
-from .models import MatchForm
+from .models import MatchForm, PersonalTags
 
 
 def sign_up(request):
     if request.method == "POST":
         fm = SignUpForm(request.POST)
         if fm.is_valid():
-            messages.success(request, 'Account Created Successfully!!!')
+            messages.success(request, '¡Cuenta creada exitosamente!')
             fm.save()
     else:
         fm = SignUpForm()
@@ -31,7 +31,7 @@ def sign_in(request):
                 user = authenticate(username=uname, password=upass)
                 if user is not None:
                     login(request, user)
-                    messages.success(request, 'Logged in successfully!!!')
+                    messages.success(request, '¡Autenticado exitosamente!')
                     return HttpResponseRedirect('/home_profile/')
         else:
             fm = AuthenticationForm()
@@ -48,21 +48,34 @@ def home_profile(request):
 
 
 def profile_settings(request):
+    # possible query parameter: ?tab, cuyos valores pueden ser {'ajustes', 'juegos', 'tags'}
+    # pero es posible no recibir tab, lo que llevará a cargar la pestaña principal de esta página
     if request.user.is_authenticated:
         if request.method == 'POST':
-            form = PasswordChangeForm(data=request.POST, user=request.user)
+            pass_form = PasswordChangeForm(data=request.POST, user=request.user)
 
-            if form.is_valid():
-                form.save()
-                update_session_auth_hash(request, form.user)
+            if pass_form.is_valid():  # password change form
+                pass_form.save()
+                update_session_auth_hash(request, pass_form.user)
                 messages.success(request, 'Password changed successfully')
+                return redirect('/profile_settings?tab=ajustes')
+            elif 'tags' in request.POST:  # tags form
+                tags = request.POST['tags']
+                user = User.objects.get(pk=request.user.id)
+                personal_tags = PersonalTags(tags=tags, user=user)
+                personal_tags.save()
+                return redirect('/profile_settings?tab=tags')
+
             else:
                 messages.error(request, 'Unable to change your password. Invalid form.')
             return redirect('/profile_settings')
         else:
-            password_change_form = PasswordChangeForm(user=request.user)
+            tags = PersonalTags.tags.most_common()
+            context = {
+                'user_tags': tags
+            }
 
-            return render(request, 'profile_settings.html')
+            return render(request, 'profile_settings.html', context)
     else:
         return HttpResponseRedirect('/')
 
