@@ -10,6 +10,7 @@
 
 
 {% block content %}
+<div class='flex-container2'>
 <div class=left-div>
     <form action="" method="post" novalidate>
         {% csrf_token %}
@@ -54,5 +55,5 @@
     <h2 class='register-message'>¿No tienes una cuenta?</h2>
     <button type="button" class="login big-button" onclick="location.href='../signup/'">¡Regístrate!</button>
 </div>
-
+</div>
 {% endblock %}
