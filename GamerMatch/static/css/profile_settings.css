@@ -183,19 +183,13 @@ Tags favoritos
 }
 
 .tag_input {
-    background: whitesmoke;
-    color: #2962fa;
     margin: 0 5px 0 0;
     width: 80%;
-
-    height: 25px;
-    border-radius: 5px;
-    border-style: none;
 }
 .add_tag_button {
     background: #64b628;
     width: 10%;
-    height: 25px;
+    height: max-content;
     padding: 5px;
     border-style: none;
 }
