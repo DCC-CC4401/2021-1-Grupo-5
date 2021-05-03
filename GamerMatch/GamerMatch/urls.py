@@ -27,5 +27,5 @@ urlpatterns = [
     path('profile_settings/', profile_settings, name='profile_settings'),
     path('upload/', new_publication, name='upload'),
     path('logout/',user_logout,name='logout'),
-    path('faq/', go_faq),
+    path('faq/', go_faq,name='faq'),
 ]
