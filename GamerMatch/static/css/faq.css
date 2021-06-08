@@ -1,8 +1,26 @@
 
+h1 {
+    font-size: 60px;!important
+}
+
 body {
     color: #ffffff;
 }
 
 .faq_title {
     text-align: center;
+
+}
+
+.main {
+    background-color: forestgreen;
+    width: 50%;
+    margin-left: 25%;
+    padding: 20px;
+    margin-top: 3%;
+    border-radius: 20px;
+    box-shadow: #d1ffd1 0 0 5px 6px;
+    font-size: 30px;
+    text-align: justify;
+
 }
