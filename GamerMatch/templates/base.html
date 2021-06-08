@@ -23,6 +23,7 @@
 
     </head>
 <body>
+<div class="page">
     <nav class = "navbar  navbar-dark" style="background-color: forestgreen;
                                                   flex-direction: row">
         <a class="navbar-brand mb-0 h1" href="/" style="display: flex;
@@ -34,10 +35,10 @@
         </a>
             {% block navbarButton %} {% endblock %}
         </nav>
-<div class="section">
+
         {% block content %} {% endblock %}
-</div>
-<section class="">
+
+<section class="footer">
   <!-- Footer -->
   <footer class="text-center text-white static-bottom" style="background-color: forestgreen;">
     <!-- Grid container -->
@@ -46,7 +47,7 @@
       <section class="">
         <p class="d-flex justify-content-center align-items-center" >
           <span class="me-3">Frequently Asked Questions  </span>
-          <a  href ="faq/" class="btn btn-outline-light btn-rounded" style="margin-left: 1rem;" >
+          <a  href ="{% url 'faq' %}" class="btn btn-outline-light btn-rounded" style="margin-left: 1rem;" >
             FAQ
           </a>
         </p>
@@ -64,6 +65,6 @@
   </footer>
   <!-- Footer -->
 </section>
-
+</div>
     </body>
 </html>

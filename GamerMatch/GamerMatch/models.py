@@ -7,7 +7,7 @@ class MatchForm(models.Model):
     juego = models.CharField(max_length=100)
     tags = models.TextField(max_length=100)
     descripcion = models.TextField(max_length=200)
-    user = models.CharField(max_length=100, default='')
+    user = models.CharField(max_length=150, default='')
     time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
@@ -22,5 +22,3 @@ class PersonalTags(models.Model):
 
     def __str__(self):
         return self.user.name + " tags"
-
-
