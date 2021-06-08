@@ -10,13 +10,14 @@
 {% block title %} UPLOAD {% endblock %}
 
 {% block navbarButton %}
-
     <div>
         <a href={% url 'profile_settings' %}>
-            <div class="profile_icon"> <img src="../static/img/profile_icon.png" alt="profile_icon"  width="100" height="100"> </div>
+            <div class="profile_icon"><img width="50" height=50" src="../static/img/profile_icon.png"
+                                           alt="profile_icon"></div>
         </a>
         <a href={% url 'logout' %}>
-            <div class="profile_icon"> <img src="../static/img/logout_icon.png" alt="logout_icon"  width="100" height="100"></div>
+            <div class="profile_icon"><img width="50" height="50" src="../static/img/logout_icon.png" alt="logout_icon">
+            </div>
         </a>
     </div>
 
