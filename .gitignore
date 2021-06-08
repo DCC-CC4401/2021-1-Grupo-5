@@ -6,3 +6,5 @@ GamerMatch/GamerMatch/__pycache__/
 GamerMatch/__pycache__/
 
 GamerMatch/GamerMatch/migrations/__pycache__/
+
+GamerMatch/db.sqlite3
