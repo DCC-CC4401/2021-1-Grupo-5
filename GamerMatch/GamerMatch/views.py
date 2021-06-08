@@ -9,19 +9,33 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.models import User
 from .models import MatchForm, PersonalTags
 
-
 def sign_up(request):
     if request.method == "POST":
         fm = SignUpForm(request.POST)
         if fm.is_valid():
             messages.success(request, '¡Cuenta creada exitosamente!')
             fm.save()
+            uname = fm.cleaned_data['username']
+            upass = fm.cleaned_data['password1']
+            user = authenticate(username=uname, password=upass)
+            if user is not None:
+                login(request, user)
+                messages.success(request, '¡Autenticado exitosamente!')
+                return HttpResponseRedirect('/home_profile/')
+            else:
+                # no deberia pasar nunca
+                return render(request, 'signup.html', {'form': fm})
+        else:
+            messages.success(request, '¡Algo salió mal!')
+            return render(request, 'signup.html', {'form': fm})
     else:
+        # no deberia pasar nunca
         fm = SignUpForm()
-    return render(request, 'signup.html', {'form': fm})
+        return render(request, 'signup.html', {'form': fm})
 
 
 def sign_in(request):
+
     if not request.user.is_authenticated:
         if request.method == "POST":
             fm = AuthenticationForm(request=request, data=request.POST)
@@ -33,6 +47,9 @@ def sign_in(request):
                     login(request, user)
                     messages.success(request, '¡Autenticado exitosamente!')
                     return HttpResponseRedirect('/home_profile/')
+            else:
+                messages.success(request, '¡Credenciales incorrectas!')
+                return render(request, 'userlogin.html', {'form': fm})
         else:
             fm = AuthenticationForm()
         return render(request, 'userlogin.html', {'form': fm})
