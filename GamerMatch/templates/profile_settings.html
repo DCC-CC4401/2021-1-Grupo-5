@@ -69,7 +69,7 @@
     </div>
 
     <div id="body_juegos_favoritos" class="inactive_content">
-        <form method="post" id="favorite_games_form">
+        <form method="post" id="favorite_games_form" action="{% url 'update_favorite_games' %}">
             {% csrf_token %}
 
             <div class="content_body" >  <!--Juegos Favoritos-->
@@ -168,7 +168,6 @@
         }
         return cookieValue;
     };
-
     // Change password form
     let submit_change_psw_button = document.getElementById('change_password_form_btn');
     submit_change_psw_button.addEventListener('click', function () {
@@ -206,6 +205,34 @@
         return false;
         })
 
+    // Change favorite games form
+    let submit_change_fv_games_form = document.getElementById('favorite_games_form');
+    submit_change_fv_games_form.addEventListener('change', function () {
+        /*
+        When the form changes, is instantly submited without reloading the page.
+        The form changes when a checkbox is pressed. It's like the 'like' button on social medias.
+        */
+        let data = new FormData();
+        data.append('lol_game', document.getElementById('lol_checkbox').value);
+        data.append('minecraft_game', document.getElementById('minecraft_checkbox').value);
+        data.append('smash_game', document.getElementById('smash_checkbox').value);
+
+        let xhrequest = new XMLHttpRequest();
+        xhrequest.open('POST', "{% url 'update_favorite_games' %}");
+        xhrequest.setRequestHeader('X-CSRFToken', csrfcookie());
+        xhrequest.timeout = 100;
+        xhrequest.onload = function (d) {
+            alert('response:'+d.currentTarget.responseText);
+            console.log(d.currentTarget.responseText);
+        }
+        xhrequest.onerror = function (d) {
+            alert('Failed');
+        }
+        xhrequest.send(data);
+
+        return false;
+    })
+
     // Add tags form
     let submit_tags_button = document.getElementById('add_tag_button');
     submit_tags_button.addEventListener('click', function () {
@@ -231,8 +258,6 @@
         }
         return false;
     });
-
-    // Change favorite games form
 
 
 </script>
