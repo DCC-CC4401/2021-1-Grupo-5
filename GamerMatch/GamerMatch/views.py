@@ -90,7 +90,7 @@ def update_favorite_games(request):
         return HttpResponseRedirect('/profile_settings?tab=juegos')
     elif request.method == 'POST' and request.user.is_authenticated:
         # do stuff with the form data
-        return HttpResponse('<h1>Update favorite games: POST request not implemented yet</h1>')
+        return JsonResponse({'message': 'Update favorite games: POST request not implemented yet'})
 
 
 def add_new_tags(request):
@@ -98,7 +98,7 @@ def add_new_tags(request):
         return HttpResponseRedirect('/profile_settings?tab=tags')
     elif request.method == 'POST' and request.user.is_authenticated:
         # do stuff with the form data
-        return HttpResponse('<h1>Add tags: POST request not impmemented yet</h1>')
+        return JsonResponse({'message': 'Add tags POST request not implemented yet'})
 
 
 def profile_settings(request):
