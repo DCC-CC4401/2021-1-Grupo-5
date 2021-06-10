@@ -107,12 +107,15 @@ def user_logout(request):
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'home_profile.html', {'name': request.user})
+        return HttpResponseRedirect('/home_profile')
+        # return render(request, 'home_profile.html', {'name': request.user})
     else:
         return render(request, "home.html")
 
+
 def go_faq(request):
     return render(request, "faq.html")
+
 
 def new_publication(request):
 
