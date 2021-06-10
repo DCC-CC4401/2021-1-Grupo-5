@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import Template, Context, loader
 from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import messages
@@ -27,7 +27,11 @@ def sign_up(request):
                 # no deberia pasar nunca
                 return render(request, 'signup.html', {'form': fm})
         else:
-            messages.success(request, '¡Algo salió mal!')
+            uname = fm.data['username']
+            if User.objects.filter(username=uname).exists():
+                messages.success(request, 'Usuario ya existe.')
+            else:
+                messages.success(request, 'Ups! Algo salió mal. A debuggear!')
             return render(request, 'signup.html', {'form': fm})
     else:
         # no deberia pasar nunca
@@ -66,11 +70,42 @@ def home_profile(request):
         return HttpResponseRedirect('/')
 
 
+def change_password(request):
+    if request.method == 'GET':
+        return HttpResponseRedirect('/profile_settings?tab=ajustes')
+    elif request.user.is_authenticated and request.method == 'POST':
+        pass_form = PasswordChangeForm(data=request.POST, user=request.user)
+
+        if pass_form.is_valid():  # password change form
+            pass_form.save()
+            update_session_auth_hash(request, pass_form.user)
+            messages.success(request, 'Password changed successfully')
+        else:
+            messages.error(request, 'Unable to change your password. Invalid form probably because some validations.')
+        return redirect('/profile_settings?tab=ajustes')
+
+
+def update_favorite_games(request):
+    if request.method == 'GET':
+        return HttpResponseRedirect('/profile_settings?tab=juegos')
+    elif request.method == 'POST' and request.user.is_authenticated:
+        # do stuff with the form data
+        return HttpResponse('<h1>Update favorite games: POST request not implemented yet</h1>')
+
+
+def add_new_tags(request):
+    if request.method == 'GET':
+        return HttpResponseRedirect('/profile_settings?tab=tags')
+    elif request.method == 'POST' and request.user.is_authenticated:
+        # do stuff with the form data
+        return HttpResponse('<h1>Add tags: POST request not impmemented yet</h1>')
+
+
 def profile_settings(request):
     # possible query parameter: ?tab, cuyos valores pueden ser {'ajustes', 'juegos', 'tags'}
     # pero es posible no recibir tab, lo que llevará a cargar la pestaña principal de esta página
     if request.user.is_authenticated:
-        if request.method == 'POST':
+        """if request.method == 'POST':
             pass_form = PasswordChangeForm(data=request.POST, user=request.user)
 
             if pass_form.is_valid():  # password change form
@@ -87,8 +122,9 @@ def profile_settings(request):
 
             else:
                 messages.error(request, 'Unable to change your password. Invalid form.')
-            return redirect('/profile_settings')
-        else:
+            return redirect('/profile_settings')"""
+        # else:
+        if request.method == 'GET':
             tags = PersonalTags.tags.most_common()
             context = {
                 'user_tags': tags
@@ -106,7 +142,8 @@ def user_logout(request):
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'home_profile.html', {'name': request.user})
+        return HttpResponseRedirect('/home_profile')
+        # return render(request, 'home_profile.html', {'name': request.user})
     else:
         return render(request, "home.html")
 
@@ -116,8 +153,7 @@ def go_faq(request):
         return render(request, "faq.html", {'icons': 1})
     else:
         return render(request, "faq.html", {'icons': 0})
-
-
+      
 
 def new_publication(request):
     if request.method == 'GET':  # Si estamos cargando la página
