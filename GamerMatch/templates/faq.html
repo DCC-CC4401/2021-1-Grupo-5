@@ -9,15 +9,23 @@
 {% block title %} FAQ {% endblock %}
 
 {% block navbarButton %}
-    <div>
+    <div id="icon" hidden>{{ icons }}</div>
+
+    <div id="iconsDiv1">
         <a href={% url 'profile_settings' %}>
             <div class="profile_icon"><img width="50" height=50" src="../static/img/profile_icon.png"
                                            alt="profile_icon"></div>
         </a>
         <a href={% url 'logout' %}>
-            <div class="profile_icon"><img width="50" height="50" src="../static/img/logout_icon.png" alt="logout_icon">
+            <div class="profile_icon"><img width="50" height="50" src="../static/img/logout_icon.png"
+                                           alt="logout_icon">
             </div>
         </a>
+    </div>
+
+    <div id="iconsDiv2">
+        <button type="button" class="login" onclick="location.href='../userlogin/'">Iniciar Sesión</button>
+
     </div>
 
 {% endblock %}
@@ -53,4 +61,18 @@
 
     </div>
     <br><br><br>
+    <script type="text/javascript">
+        var div1 = document.getElementById("iconsDiv1");
+        var div2 = document.getElementById("iconsDiv2");
+        var numberIcon = {{ icons }};
+        if (numberIcon === 1) {
+            div1.style.display = "block";
+            div2.style.display = "none";
+        } else {
+            div1.style.display = "none";
+            div2.style.display = "block";
+        }
+
+
+    </script>
 {% endblock %}
