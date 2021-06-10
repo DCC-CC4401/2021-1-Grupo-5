@@ -26,7 +26,11 @@ def sign_up(request):
                 # no deberia pasar nunca
                 return render(request, 'signup.html', {'form': fm})
         else:
-            messages.success(request, '¡Algo salió mal!')
+            uname = fm.data['username']
+            if User.objects.filter(username=uname).exists():
+                messages.success(request, 'Usuario ya existe.')
+            else:
+                messages.success(request, 'Ups! Algo salió mal. A debuggear!')
             return render(request, 'signup.html', {'form': fm})
     else:
         # no deberia pasar nunca
@@ -107,7 +111,8 @@ def user_logout(request):
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'home_profile.html', {'name': request.user})
+        return HttpResponseRedirect('/home_profile')
+        # return render(request, 'home_profile.html', {'name': request.user})
     else:
         return render(request, "home.html")
 
