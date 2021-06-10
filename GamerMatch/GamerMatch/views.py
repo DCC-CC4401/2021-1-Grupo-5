@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.models import User
 from .models import MatchForm, PersonalTags
 
+
 def sign_up(request):
     if request.method == "POST":
         fm = SignUpForm(request.POST)
@@ -39,7 +40,6 @@ def sign_up(request):
 
 
 def sign_in(request):
-
     if not request.user.is_authenticated:
         if request.method == "POST":
             fm = AuthenticationForm(request=request, data=request.POST)
@@ -62,7 +62,6 @@ def sign_in(request):
 
 
 def home_profile(request):
-
     solicitudes = MatchForm.objects.all()
 
     if request.user.is_authenticated:
@@ -150,11 +149,13 @@ def index(request):
 
 
 def go_faq(request):
-    return render(request, "faq.html")
-
+    if request.user.is_authenticated:
+        return render(request, "faq.html", {'icons': 1})
+    else:
+        return render(request, "faq.html", {'icons': 0})
+      
 
 def new_publication(request):
-
     if request.method == 'GET':  # Si estamos cargando la página
         return render(request, "upload.html")  # Mostrar el template
 
@@ -163,7 +164,7 @@ def new_publication(request):
         if request.user.is_authenticated:
             pass
 
-        if True: # Reemplazar este if con el anterior para permitir solo ingreso de user que inicio sesion
+        if True:  # Reemplazar este if con el anterior para permitir solo ingreso de user que inicio sesion
 
             # Tomar los elementos del formulario que vienen en request.POST
             juego = request.POST['nombre_juego']
@@ -177,7 +178,3 @@ def new_publication(request):
 
             # Redireccionar la página /tareas
             return HttpResponseRedirect('/home_profile')
-
-
-
-
