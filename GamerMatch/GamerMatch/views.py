@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.models import User
 from .models import MatchForm, PersonalTags
 
+
 def sign_up(request):
     if request.method == "POST":
         fm = SignUpForm(request.POST)

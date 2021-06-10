@@ -25,6 +25,23 @@ input[type="password"] {
     height: 20px;
     margin: 2px;
 }
+input[type="checkbox"] {
+    display: block;
+    width: 30px;
+    height: 30px;
+    -webkit-appearance: none;
+    outline: 0;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+}
+input[type=checkbox]:not(:checked) {
+    background-image: url("../img/star_off.png");
+}
+
+input[type=checkbox]:checked {
+    background-image: url("../img/star_on.png");
+}
 
 .section_title {
     font-weight: bold;

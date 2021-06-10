@@ -75,38 +75,30 @@
             <div class="content_body" >  <!--Juegos Favoritos-->
             <div>
                 <div class="item_row">
-                    <div class="selected_star_icon">
-                        <img src="../static/img/star_on.png">  <!--Star-->
-                    </div>
-
-                    <div class="image_icon">
+                    <input type="checkbox" id="lol_checkbox" name="lol_game">  <!--Checkbox-->
+                    <label for="lol_checkbox" class="image_icon">
                         <img src="../static/img/lol.png">  <!--Game Icon-->
-                    </div>
+                    </label>
 
                     <div class="description_whiteboard">  <!--Description-->
                         League of Legends
                     </div>
                 </div>
                 <div class="item_row">
-                    <div class="selected_star_icon">
-                        <img src="../static/img/star_off.png" >  <!--Star-->
-                    </div>
-                    <div class="image_icon">
+                    <input type="checkbox" id="minecraft_checkbox" name="minecraft_game">  <!--Checkbox-->
+                    <label for="minecraft_checkbox" class="image_icon">
                         <img src="../static/img/minecraft.png" >  <!--Game Icon-->
-                    </div>
+                    </label>
 
                     <div class="description_whiteboard">  <!--Description-->
                         Minecraft
                     </div>
                 </div>
                 <div class="item_row">
-                    <div class="selected_star_icon">
-                        <img src="../static/img/star_off.png">  <!--Star-->
-                    </div>
-
-                    <div class="image_icon">
+                    <input type="checkbox" id="smash_checkbox" name="smash_game">
+                    <label for="smash_checkbox" class="image_icon">
                         <img src="../static/img/smash.png">  <!--Game Icon-->
-                    </div>
+                    </label>
 
                     <div class="description_whiteboard">  <!--Description-->
                         Super Smash Bros. Ultimate
@@ -175,12 +167,11 @@
             }
         }
         return cookieValue;
-};
+    };
 
-    // Change password js
+    // Change password form
     let submit_change_psw_button = document.getElementById('change_password_form_btn');
-    submit_change_psw_button.addEventListener('click', validate)
-    function validate() {
+    submit_change_psw_button.addEventListener('click', function () {
         let new_pass = document.getElementsByName('new_password1')[0].value;
         let new_pass_confirm = document.getElementsByName('new_password2')[0].value;
 
@@ -213,9 +204,9 @@
             */
         }
         return false;
-    }
+        })
 
-    {#Add tags js#}
+    // Add tags form
     let submit_tags_button = document.getElementById('add_tag_button');
     submit_tags_button.addEventListener('click', function () {
         let form = document.getElementById('tags_form');
@@ -240,6 +231,9 @@
         }
         return false;
     });
+
+    // Change favorite games form
+
 
 </script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
