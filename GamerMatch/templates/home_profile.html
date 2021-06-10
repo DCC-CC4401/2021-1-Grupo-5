@@ -47,16 +47,21 @@
 
     <div class="welcome">Todas las solicitudes</div>
 
-    {% for req in solicitudes %}
+    <div id="box_solicitudes">
 
-    <div class="request">
-        <div class="juego"><b>Juego:</b> {{req.juego}}</div>
-        <div class="fecha"><b>Fecha:</b> {{req.time}}</div>
-        <div class="juego"><b>Tags:</b> {{req.tags}}</div>
-        <div class="descripcion"><b>Descripción:</b> {{req.descripcion}}</div>
+        {% for req in solicitudes %}
+
+        <div id="request">
+            <div class="juego"><b>Juego:</b> {{req.juego}}</div>
+            <div class="fecha"><b>Fecha:</b> {{req.time}}</div>
+            <div class="juego"><b>Tags:</b> {{req.tags}}</div>
+            <div class="descripcion"><b>Descripción:</b> </div>
+            <div id="box_descripcion">{{req.descripcion}}</div>
+        </div>
+
+        {% endfor %}
+
     </div>
-
-    {% endfor %}
 
 </div>
 
