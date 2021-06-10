@@ -58,8 +58,11 @@ def sign_in(request):
 
 
 def home_profile(request):
+
+    solicitudes = MatchForm.objects.all()
+
     if request.user.is_authenticated:
-        return render(request, 'home_profile.html', {'name': request.user})
+        return render(request, 'home_profile.html', {'name': request.user, 'solicitudes': solicitudes})
     else:
         return HttpResponseRedirect('/')
 
@@ -135,3 +138,7 @@ def new_publication(request):
 
             # Redireccionar la página /tareas
             return HttpResponseRedirect('/home_profile')
+
+
+
+
