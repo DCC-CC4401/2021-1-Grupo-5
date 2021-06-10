@@ -20,9 +20,13 @@
 
 {% endblock %}
 
+
+
 {% block content %}
 
 <div class="welcome">¡Bienvenido, {{user}}!</div>
+
+
 {% if messages %}
     {% for message in messages %}
         <small {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</small>
@@ -37,7 +41,22 @@
 
     </div>
 </div>
+
+
 <div>  <!--Y aquí irían las pestañas y contenido para ver tus publicaciones y las solicitudes recomendadas-->
+
+    <div class="welcome">Todas las solicitudes</div>
+
+    {% for req in solicitudes %}
+
+    <div class="request">
+        <div class="juego"><b>Juego:</b> {{req.juego}}</div>
+        <div class="fecha"><b>Fecha:</b> {{req.time}}</div>
+        <div class="juego"><b>Tags:</b> {{req.tags}}</div>
+        <div class="descripcion"><b>Descripción:</b> {{req.descripcion}}</div>
+    </div>
+
+    {% endfor %}
 
 </div>
 
