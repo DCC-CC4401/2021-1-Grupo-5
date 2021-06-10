@@ -27,7 +27,11 @@ def sign_up(request):
                 # no deberia pasar nunca
                 return render(request, 'signup.html', {'form': fm})
         else:
-            messages.success(request, '¡Algo salió mal!')
+            uname = fm.data['username']
+            if User.objects.filter(username=uname).exists():
+                messages.success(request, 'Usuario ya existe.')
+            else:
+                messages.success(request, 'Ups! Algo salió mal. A debuggear!')
             return render(request, 'signup.html', {'form': fm})
     else:
         # no deberia pasar nunca
@@ -36,7 +40,6 @@ def sign_up(request):
 
 
 def sign_in(request):
-
     if not request.user.is_authenticated:
         if request.method == "POST":
             fm = AuthenticationForm(request=request, data=request.POST)
@@ -59,7 +62,6 @@ def sign_in(request):
 
 
 def home_profile(request):
-
     solicitudes = MatchForm.objects.all()
 
     if request.user.is_authenticated:
@@ -147,11 +149,13 @@ def index(request):
 
 
 def go_faq(request):
-    return render(request, "faq.html")
-
+    if request.user.is_authenticated:
+        return render(request, "faq.html", {'icons': 1})
+    else:
+        return render(request, "faq.html", {'icons': 0})
+      
 
 def new_publication(request):
-
     if request.method == 'GET':  # Si estamos cargando la página
         return render(request, "upload.html")  # Mostrar el template
 
@@ -160,7 +164,7 @@ def new_publication(request):
         if request.user.is_authenticated:
             pass
 
-        if True: # Reemplazar este if con el anterior para permitir solo ingreso de user que inicio sesion
+        if True:  # Reemplazar este if con el anterior para permitir solo ingreso de user que inicio sesion
 
             # Tomar los elementos del formulario que vienen en request.POST
             juego = request.POST['nombre_juego']
@@ -174,7 +178,3 @@ def new_publication(request):
 
             # Redireccionar la página /tareas
             return HttpResponseRedirect('/home_profile')
-
-
-
-
