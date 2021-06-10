@@ -36,7 +36,7 @@
 
 <div><!--Content div, with possible contents. The one that is selected -->
     <div id="body_ajustes_de_cuenta" class="inactive_content">
-        <form method="post" id="change_password_form">  <!--Cambiar contraseña-->
+        <form method="post" id="change_password_form" action="{% url 'change_password' %}">  <!--Cambiar contraseña-->
             {% csrf_token %}
 
             <div class="content_body">
@@ -62,7 +62,7 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-                 <button id="change_password_form_btn" class="change_pass_button">Cambiar Contraseña</button>
+                 <button type="button" id="change_password_form_btn" class="change_pass_button">Cambiar Contraseña</button>
             </div>
         </form>
 
@@ -158,88 +158,61 @@
 
 </div>
 
+<script src="{% static 'js/profile_settings_tab_manager.js' %}"> </script>
 <script>
-    let body_ajustes = document.getElementById('body_ajustes_de_cuenta');
-    let body_juegos = document.getElementById('body_juegos_favoritos');
-    let body_tags = document.getElementById('body_tags_favoritos');
-
-    let selected_id; //"tab_ajustes_de_cuenta";  // it will be initialized later
-
-    function tab_ajustes(e) {
-        if (selected_id !== 'tab_ajustes_de_cuenta') {
-            document.getElementById(selected_id).classList.replace('active_tab', 'inactive_tab');
-            selected_id = 'tab_ajustes_de_cuenta';
-            document.getElementById(selected_id).classList.replace('inactive_tab', 'active_tab');
-
-            body_ajustes.classList.remove('inactive_content');
-            body_juegos.classList.add('inactive_content');
-            body_tags.classList.add('inactive_content');
+    let csrfcookie = function() {
+        let cookieValue = null,
+            name = 'csrftoken';
+        if (document.cookie && document.cookie !== '') {
+            let cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                // search in the cookies, that whoe that has 'csrftoken' in its name
+                let cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
         }
-    }
-    function tab_juegos(e) {
-        if (selected_id !== 'tab_juegos_favoritos') {
-            document.getElementById(selected_id).classList.replace('active_tab', 'inactive_tab');
-            selected_id = 'tab_juegos_favoritos';
-            document.getElementById(selected_id).classList.replace('inactive_tab', 'active_tab');
+        return cookieValue;
+};
 
-            body_ajustes.classList.add('inactive_content');
-            body_juegos.classList.remove('inactive_content');
-            body_tags.classList.add('inactive_content');
-        }
-    }
-    function tab_tags() {
-        if (selected_id !== 'tab_tags_favoritos') {
-            document.getElementById(selected_id).classList.replace('active_tab', 'inactive_tab');
-            selected_id = 'tab_tags_favoritos';
-            document.getElementById(selected_id).classList.replace('inactive_tab', 'active_tab');
-
-            body_ajustes.classList.add('inactive_content');
-            body_juegos.classList.add('inactive_content');
-            body_tags.classList.remove('inactive_content');
-        }
-    }
-
-    // add tag button events
-    document.getElementById('tab_ajustes_de_cuenta').addEventListener('click', tab_ajustes);
-    document.getElementById('tab_juegos_favoritos').addEventListener('click', tab_juegos);
-    document.getElementById('tab_tags_favoritos').addEventListener('click', tab_tags);
-
-    // initialize the default tab
-    selected_id = 'tab_ajustes_de_cuenta';
-    const urlParams = new URLSearchParams(window.location.search);
-    switch (urlParams.get('tab')) {
-        case 'ajustes':
-            selected_id = 'tab_ajustes_de_cuenta';
-            body_ajustes.classList.remove('inactive_content'); break;
-        case 'juegos':
-            selected_id = 'tab_juegos_favoritos';
-            body_juegos.classList.remove('inactive_content'); break;
-        case 'tags':
-            selected_id = 'tab_tags_favoritos'
-            body_tags.classList.remove('inactive_content'); break;
-        default:  // ajustes again
-            selected_id = 'tab_ajustes_de_cuenta';
-            body_ajustes.classList.remove('inactive_content');
-    }
-    document.getElementById(selected_id).classList.replace('inactive_tab', 'active_tab');
-
-
-
-
-</script>
-<script>
-    {#Change password js#}
-    let submit_button = document.getElementById('change_password_form_btn');
-    submit_button.addEventListener('click', validate)
+    // Change password js
+    let submit_change_psw_button = document.getElementById('change_password_form_btn');
+    submit_change_psw_button.addEventListener('click', validate)
     function validate() {
         let new_pass = document.getElementsByName('new_password1')[0].value;
         let new_pass_confirm = document.getElementsByName('new_password2')[0].value;
 
         if (new_pass !== new_pass_confirm) {
             console.log("Error, la nueva contraseña no coincide al confirmarla");
-            return;
+        } else {
+            // this form must reload the page, to update the session cookie, using ajax here would complicate things.
+            console.log("cambiando contraseña");
+            document.getElementById('change_password_form').submit();  // submit and reload.
+
+            /* let data = new FormData();
+            data.append('old_password', document.getElementsByName('old_password')[0].value);
+            data.append('new_password1', document.getElementsByName('new_password1')[0].value);
+            data.append('new_password2', document.getElementsByName('new_password2')[0].value);
+
+            let xhrequest = new XMLHttpRequest();
+            xhrequest.open('POST', "{% url 'change_password' %}");
+            xhrequest.timeout = 1000;
+            xhrequest.withCredentials = true;
+            // xhrequest.setRequestHeader("x-csrf-token", "fetch")
+            xhrequest.setRequestHeader('X-CSRFToken', csrfcookie());
+            xhrequest.onload = function (d) {
+               //let responseText = d.currentTarget.responseText;
+               alert('enviado!!, '+d.currentTarget.responseText);
+            }
+            xhrequest.onerror = function () {
+               alert('Falló el envio del formulario :c');
+            }
+            xhrequest.send(data);
+            */
         }
-        document.getElementById('change_password_form').submit();
+        return false;
     }
 
     {#Add tags js#}
@@ -248,10 +221,24 @@
         let form = document.getElementById('tags_form');
         if (document.getElementById('new_tags').value !== '') {
             console.log("Se enviará la entrada");
-            form.submit();
+            /*
+
+            let xhrequest = new XMLHttpRequest();
+            xhrequest.open('POST', '/change_password');
+            xhrequest.timeout = 1000;
+            xhrequest.onload = function (d) {
+               //let responseText = d.currentTarget.responseText;
+               alert('enviado!!');
+            }
+            xhrequest.onerror = function () {
+               alert('Falló el envio del formulario :c');
+            }
+            xhrequest.send(data); */
+            // form.submit();
         } else {
             console.log("Error, la entrada de tags está vacía");
         }
+        return false;
     });
 
 </script>
