@@ -26,7 +26,11 @@ def sign_up(request):
                 # no deberia pasar nunca
                 return render(request, 'signup.html', {'form': fm})
         else:
-            messages.success(request, '¡Algo salió mal!')
+            uname = fm.data['username']
+            if User.objects.filter(username=uname).exists():
+                messages.success(request, 'Usuario ya existe.')
+            else:
+                messages.success(request, 'Ups! Algo salió mal. A debuggear!')
             return render(request, 'signup.html', {'form': fm})
     else:
         # no deberia pasar nunca
