@@ -44,9 +44,9 @@
                 </td>
             </tr>
         </table>
-        {% if form.non_field_errors %}
-        {% for error in form.non_field_errors %}
-        <p class="error-message">{{error}}</p>
+        {% if messages %}
+        {% for message in messages %}
+            <p class="error-message">{{message}}</p>
         {% endfor %}
         {% endif %}
     </form>

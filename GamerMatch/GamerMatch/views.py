@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import Template, Context, loader
 from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import messages
@@ -16,9 +16,27 @@ def sign_up(request):
         if fm.is_valid():
             messages.success(request, '¡Cuenta creada exitosamente!')
             fm.save()
+            uname = fm.cleaned_data['username']
+            upass = fm.cleaned_data['password1']
+            user = authenticate(username=uname, password=upass)
+            if user is not None:
+                login(request, user)
+                messages.success(request, '¡Autenticado exitosamente!')
+                return HttpResponseRedirect('/home_profile/')
+            else:
+                # no deberia pasar nunca
+                return render(request, 'signup.html', {'form': fm})
+        else:
+            uname = fm.data['username']
+            if User.objects.filter(username=uname).exists():
+                messages.success(request, 'Usuario ya existe.')
+            else:
+                messages.success(request, 'Ups! Algo salió mal. A debuggear!')
+            return render(request, 'signup.html', {'form': fm})
     else:
+        # no deberia pasar nunca
         fm = SignUpForm()
-    return render(request, 'signup.html', {'form': fm})
+        return render(request, 'signup.html', {'form': fm})
 
 
 def sign_in(request):
@@ -33,6 +51,9 @@ def sign_in(request):
                     login(request, user)
                     messages.success(request, '¡Autenticado exitosamente!')
                     return HttpResponseRedirect('/home_profile/')
+            else:
+                messages.success(request, '¡Credenciales incorrectas!')
+                return render(request, 'userlogin.html', {'form': fm})
         else:
             fm = AuthenticationForm()
         return render(request, 'userlogin.html', {'form': fm})
@@ -41,17 +62,50 @@ def sign_in(request):
 
 
 def home_profile(request):
+    solicitudes = MatchForm.objects.all()
+
     if request.user.is_authenticated:
-        return render(request, 'home_profile.html', {'name': request.user})
+        return render(request, 'home_profile.html', {'name': request.user, 'solicitudes': solicitudes})
     else:
         return HttpResponseRedirect('/')
+
+
+def change_password(request):
+    if request.method == 'GET':
+        return HttpResponseRedirect('/profile_settings?tab=ajustes')
+    elif request.user.is_authenticated and request.method == 'POST':
+        pass_form = PasswordChangeForm(data=request.POST, user=request.user)
+
+        if pass_form.is_valid():  # password change form
+            pass_form.save()
+            update_session_auth_hash(request, pass_form.user)
+            messages.success(request, 'Password changed successfully')
+        else:
+            messages.error(request, 'Unable to change your password. Invalid form probably because some validations.')
+        return redirect('/profile_settings?tab=ajustes')
+
+
+def update_favorite_games(request):
+    if request.method == 'GET':
+        return HttpResponseRedirect('/profile_settings?tab=juegos')
+    elif request.method == 'POST' and request.user.is_authenticated:
+        # do stuff with the form data
+        return JsonResponse({'message': 'Update favorite games: POST request not implemented yet'})
+
+
+def add_new_tags(request):
+    if request.method == 'GET':
+        return HttpResponseRedirect('/profile_settings?tab=tags')
+    elif request.method == 'POST' and request.user.is_authenticated:
+        # do stuff with the form data
+        return JsonResponse({'message': 'Add tags POST request not implemented yet'})
 
 
 def profile_settings(request):
     # possible query parameter: ?tab, cuyos valores pueden ser {'ajustes', 'juegos', 'tags'}
     # pero es posible no recibir tab, lo que llevará a cargar la pestaña principal de esta página
     if request.user.is_authenticated:
-        if request.method == 'POST':
+        """if request.method == 'POST':
             pass_form = PasswordChangeForm(data=request.POST, user=request.user)
 
             if pass_form.is_valid():  # password change form
@@ -68,8 +122,9 @@ def profile_settings(request):
 
             else:
                 messages.error(request, 'Unable to change your password. Invalid form.')
-            return redirect('/profile_settings')
-        else:
+            return redirect('/profile_settings')"""
+        # else:
+        if request.method == 'GET':
             tags = PersonalTags.tags.most_common()
             context = {
                 'user_tags': tags
@@ -87,15 +142,20 @@ def user_logout(request):
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'home_profile.html', {'name': request.user})
+        return HttpResponseRedirect('/home_profile')
+        # return render(request, 'home_profile.html', {'name': request.user})
     else:
         return render(request, "home.html")
 
+
 def go_faq(request):
-    return render(request, "faq.html")
+    if request.user.is_authenticated:
+        return render(request, "faq.html", {'icons': 1})
+    else:
+        return render(request, "faq.html", {'icons': 0})
+      
 
 def new_publication(request):
-
     if request.method == 'GET':  # Si estamos cargando la página
         return render(request, "upload.html")  # Mostrar el template
 
@@ -104,7 +164,7 @@ def new_publication(request):
         if request.user.is_authenticated:
             pass
 
-        if True: # Reemplazar este if con el anterior para permitir solo ingreso de user que inicio sesion
+        if True:  # Reemplazar este if con el anterior para permitir solo ingreso de user que inicio sesion
 
             # Tomar los elementos del formulario que vienen en request.POST
             juego = request.POST['nombre_juego']

@@ -12,7 +12,7 @@
 {% block content %}
 <div class='flex-container2'>
     <div class=left-div>
-        <form action="" method="post" novalidate>
+        <form action="" method="post" id="signupform">
             {% csrf_token %}
             <table>
                 <tr>
@@ -25,7 +25,7 @@
                         <label class='form-label' for="id_username">Usuario:</label>
                     </td>
                     <td class='form-input-cell'>
-                        <input type="text" name="username" maxlength="150" autofocus required id="id_username"> <br><br>
+                        <input type="text" name="username" maxlength="50" autofocus required id="id_username"> <br><br>
                     </td>
                 </tr>
                 <tr>
@@ -33,7 +33,7 @@
                         <label class='form-label' for="id_first_name">Nombre:</label>
                     </td>
                     <td class='form-input-cell'>
-                        <input type="text" name="first_name" maxlength="150" id="id_first_name"> <br><br>
+                        <input type="text" name="first_name" maxlength="50" id="id_first_name"> <br><br>
                     </td>
                 </tr>
                 <tr>
@@ -41,7 +41,7 @@
                         <label class='form-label' for="id_last_name">Apellido:</label>
                     </td>
                     <td class='form-input-cell'>
-                        <input type="text" name="last_name" maxlength="150" id="id_last_name"> <br><br>
+                        <input type="text" name="last_name" maxlength="50" id="id_last_name"> <br><br>
                     </td>
                 </tr>
                 <tr>
@@ -72,21 +72,30 @@
                 </tr>
                 <tr>
                     <td class='login-button-cell' colspan='2'>
-                        <input type="submit" value="Registrarse">
+                        <input id="fake-submit" onclick="validateForm()" type="button" value="Registrarse">
+                    </td>
+                </tr>
+                <tr style="display: none;">
+                    <td class='login-button-cell' colspan='2'>
+                        <input id="true-submit" type="submit" value="Registrarse">
                     </td>
                 </tr>
             </table>
-            {% if form.non_field_errors %}
-            {% for error in form.non_field_errors %}
-            <p class="error-message">{{error}}</p>
+            <p class="error-message" id="errorMessage">
+            {% if messages %}
+            {% for message in messages %}
+            {{message}}
             {% endfor %}
             {% endif %}
+            </p>
         </form>
     </div>
 
     <div class='right-div'>
         <h2 class='register-message'>¿Ya tienes una cuenta?</h2>
+
         <button type="button" class="login big-button" onclick="location.href='../userlogin/'">Iniciar Sesión</button>
     </div>
 </div>
+<script src="{% static 'js/register_validate.js' %}"></script>
 {% endblock %}
