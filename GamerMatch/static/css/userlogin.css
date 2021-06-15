@@ -28,10 +28,12 @@
 .login-button{
     display: block;
     margin: 0 auto;
+    border-radius: 10px;
 }
 
 .form-input{
     width: 230px;
+    border-radius: 10px;
 }
 
 .login-message-cell{
@@ -77,3 +79,4 @@
     color:tomato;
     text-align: center;
 }
+

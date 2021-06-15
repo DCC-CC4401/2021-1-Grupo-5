@@ -11,7 +11,7 @@
 
 {% block content %}
 <div class='flex-container2'>
-<div class=left-div>
+<div class="left-div border">
     <form action="" method="post" novalidate>
         {% csrf_token %}
         <table>
@@ -40,7 +40,7 @@
             </tr>
             <tr>
                 <td class='login-button-cell' colspan='2'>
-                    <input class='login-button' type="submit", value="Entrar">
+                    <input class='login-button login' type="submit", value="Entrar">
                 </td>
             </tr>
         </table>
@@ -51,7 +51,7 @@
         {% endif %}
     </form>
 </div>
-<div class='right-div'>
+<div class='right-div border'>
     <h2 class='register-message'>¿No tienes una cuenta?</h2>
     <button type="button" class="login big-button" onclick="location.href='../signup/'">¡Regístrate!</button>
 </div>
