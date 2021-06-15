@@ -104,6 +104,26 @@
                         Super Smash Bros. Ultimate
                     </div>
                 </div>
+                <div class="item_row">
+                    <input type="checkbox" id="valorant_checkbox" name="valorant_game">  <!--Checkbox-->
+                    <label for="valorant_checkbox" class="image_icon">
+                        <img src="../static/img/valorant.png">  <!--Game Icon-->
+                    </label>
+
+                    <div class="description_whiteboard">  <!--Description-->
+                        Valorant
+                    </div>
+                </div>
+                <div class="item_row">
+                    <input type="checkbox" id="overwatch_checkbox" name="overwatch_game">  <!--Checkbox-->
+                    <label for="overwatch_checkbox" class="image_icon">
+                        <img src="../static/img/overwatch.png">  <!--Game Icon-->
+                    </label>
+
+                    <div class="description_whiteboard">  <!--Description-->
+                        Overwatch
+                    </div>
+                </div>
             </div>
         </div>
         </form>
@@ -213,9 +233,11 @@
         The form changes when a checkbox is pressed. It's like the 'like' button on social medias.
         */
         let data = new FormData();
-        data.append('lol_game', document.getElementById('lol_checkbox').value);
-        data.append('minecraft_game', document.getElementById('minecraft_checkbox').value);
-        data.append('smash_game', document.getElementById('smash_checkbox').value);
+        data.append('lol_game', document.getElementById('lol_checkbox').checked);
+        data.append('minecraft_game', document.getElementById('minecraft_checkbox').checked);
+        data.append('smash_game', document.getElementById('smash_checkbox').checked);
+        data.append('overwatch_game', document.getElementById('overwatch_checkbox').checked);
+        data.append('valorant_game', document.getElementById('valorant_checkbox').checked);
 
         let xhrequest = new XMLHttpRequest();
         xhrequest.open('POST', "{% url 'update_favorite_games' %}");
