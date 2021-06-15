@@ -62,10 +62,11 @@ def sign_in(request):
 
 
 def home_profile(request):
-    solicitudes = MatchForm.objects.all()
+    solicitudes      = MatchForm.objects.all()
+    solicitudes_user = MatchForm.objects.filter(user=User.objects.get(pk=request.user.id))
 
     if request.user.is_authenticated:
-        return render(request, 'home_profile.html', {'name': request.user, 'solicitudes': solicitudes})
+        return render(request, 'home_profile.html', {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user":solicitudes_user})
     else:
         return HttpResponseRedirect('/')
 
