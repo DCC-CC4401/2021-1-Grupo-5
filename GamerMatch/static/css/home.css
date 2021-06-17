@@ -42,3 +42,8 @@
     padding: 40px;
     font-size: 18px;
 }
+.success{
+    font-size: x-large;
+    margin-left: 20px;
+    color: aquamarine;
+}
