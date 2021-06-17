@@ -34,7 +34,7 @@
     </div>
 </div>
 
-<div><!--Content div, with possible contents. The one that is selected -->
+<div  class="active_content"><!--Content div, with possible contents. The one that is selected -->
     <div id="body_ajustes_de_cuenta" class="inactive_content">
         <form method="post" id="change_password_form" action="{% url 'change_password' %}">  <!--Cambiar contraseña-->
             {% csrf_token %}
@@ -75,7 +75,7 @@
             <div class="content_body" >  <!--Juegos Favoritos-->
             <div>
                 <div class="item_row">
-                    <input type="checkbox" id="lol_checkbox" name="lol_game">  <!--Checkbox-->
+                    <input type="checkbox" id="lol_checkbox" name="lol_game" class="star_checkbox">  <!--Checkbox-->
                     <label for="lol_checkbox" class="image_icon">
                         <img src="../static/img/lol.png">  <!--Game Icon-->
                     </label>
@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <div class="item_row">
-                    <input type="checkbox" id="minecraft_checkbox" name="minecraft_game">  <!--Checkbox-->
+                    <input type="checkbox" id="minecraft_checkbox" name="minecraft_game" class="star_checkbox">  <!--Checkbox-->
                     <label for="minecraft_checkbox" class="image_icon">
                         <img src="../static/img/minecraft.png" >  <!--Game Icon-->
                     </label>
@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div class="item_row">
-                    <input type="checkbox" id="smash_checkbox" name="smash_game">
+                    <input type="checkbox" id="smash_checkbox" name="smash_game" class="star_checkbox">
                     <label for="smash_checkbox" class="image_icon">
                         <img src="../static/img/smash.png">  <!--Game Icon-->
                     </label>
