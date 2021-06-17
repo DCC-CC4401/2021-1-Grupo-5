@@ -62,11 +62,12 @@ def sign_in(request):
 
 
 def home_profile(request):
-    solicitudes      = MatchForm.objects.all()
+    solicitudes = MatchForm.objects.all()
     solicitudes_user = MatchForm.objects.filter(user=User.objects.get(pk=request.user.id))
 
     if request.user.is_authenticated:
-        return render(request, 'home_profile.html', {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user":solicitudes_user})
+        return render(request, 'home_profile.html',
+                      {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user": solicitudes_user})
     else:
         return HttpResponseRedirect('/')
 
@@ -95,6 +96,7 @@ def update_favorite_games(request):
                 return True
             else:
                 return False
+
         # Get the data
         lol_game = convert_to_bool(request.POST['lol_game'])
         minecraft_game = convert_to_bool(request.POST['minecraft_game'])
@@ -103,26 +105,18 @@ def update_favorite_games(request):
         overwatch_game = convert_to_bool(request.POST['overwatch_game'])
         user = User.objects.get(pk=request.user.id)
 
-        games_form = PersonalGames(lol=lol_game, minecraft=minecraft_game, smash=smash_game,
-                                   valorant=valorant_game, overwatch=overwatch_game, user=user)
-        data = {"lol":lol_game, "minecraft":minecraft_game, "smash":smash_game,
+        data = {"lol": lol_game, "minecraft": minecraft_game, "smash": smash_game,
                 "valorant": valorant_game, "overwatch": overwatch_game}
         PersonalGames.objects.update_or_create(user=user, defaults=data)
 
-        """if PersonalGames.objects.filter(user_id=request.user.id).count() == 0:
-            # Create the form
-            games_form = PersonalGames(lol=lol_game, minecraft=minecraft_game, smash=smash_game,
-                                       valorant=valorant_game, overwatch=overwatch_game, user=user)
-            games_form.save()
-            return JsonResponse({'message': 'Added favorite games',
+        if request.is_ajax():
+            return JsonResponse({'message': "AJAX POST received. DB updated successfully.",
+                                 'caution': "Guys, when we're ready with this, we have to remember removing this msg",
                                  'data_received': [lol_game, minecraft_game, smash_game,
-                                                   valorant_game, overwatch_game]})
-        elif PersonalGames.objects.filter(user_id=request.user.id).count() == 1:
-            # Update that
-            return JsonResponse({'message': 'Update favorite games: POST request not implemented yet',
-                                 'data_received': [lol_game, minecraft_game, smash_game,
-                                                   valorant_game, overwatch_game]})"""
-        return JsonResponse({'message': 'Update favorite games: POST request not implemented yet',
+                                                   valorant_game, overwatch_game]},
+                                status=200)
+
+        return JsonResponse({'message': 'POST received. Favorite games updated',
                              'data_received': [lol_game, minecraft_game, smash_game,
                                                valorant_game, overwatch_game]})
 
@@ -187,7 +181,7 @@ def go_faq(request):
         return render(request, "faq.html", {'icons': 1})
     else:
         return render(request, "faq.html", {'icons': 0})
-      
+
 
 def new_publication(request):
     if request.method == 'GET':  # Si estamos cargando la página
