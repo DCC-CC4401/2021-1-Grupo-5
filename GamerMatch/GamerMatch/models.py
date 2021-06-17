@@ -1,5 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
+from django.conf import settings
 
 
 # Create your models here.
@@ -12,6 +14,20 @@ class MatchForm(models.Model):
 
     def __str__(self):
         return self.juego  # name to be shown when called
+
+
+class PersonalGames(models.Model):
+    lol = models.BooleanField(default=False)
+    minecraft = models.BooleanField(default=False)
+    smash = models.BooleanField(default=False)
+    valorant = models.BooleanField(default=False)
+    overwatch = models.BooleanField(default=False)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # user = models.CharField(max_length=150, default='')
+
+    def __str__(self):
+        return str(self.user)
 
 
 class PersonalTags(models.Model):

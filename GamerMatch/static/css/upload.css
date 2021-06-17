@@ -44,7 +44,7 @@ textarea {
   vertical-align: top;
 }
 
-button[type=submit], button[type=cancel] {
+button[type=submit], .bCancel {
   background-color: #4CAF50;
   border: 1px solid #242424;
   color: white;
@@ -54,7 +54,9 @@ button[type=submit], button[type=cancel] {
   cursor: pointer;
 }
 
-button[type=cancel] {
+.bCancel {
+  padding: 20px 32px;
+  border-radius: 15px;
   background-color: #CDCCCB;
   color: black;
 }

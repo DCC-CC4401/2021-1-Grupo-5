@@ -30,7 +30,7 @@
      <head>
          <link rel="stylesheet" type="text/css" href="{% static 'css/upload.css' %}"/>
         <meta charset="UTF-8">
-        <title> Nueva publicació </title>
+        <title> Nueva publicación </title>
      </head>
      <body>
         <h2> Nueva publicación </h2>
@@ -58,8 +58,8 @@
              </div>
 
              <div class="center">
-                <button class="border" type="submit">Publicar</button>
-                <button class="border" type="cancel">Cancelar</button>
+                <button class="border" id="submit" type="submit">Publicar</button>
+                <a href={% url 'profile' %} class="bCancel"> Cancelar </a>
              </div>
         </form>
      </body>
