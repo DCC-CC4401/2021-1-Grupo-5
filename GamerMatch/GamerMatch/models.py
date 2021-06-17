@@ -17,8 +17,6 @@ class MatchForm(models.Model):
 
 
 class PersonalGames(models.Model):
-    # https://learndjango.com/tutorials/django-best-practices-referencing-user-model
-    # https://docs.djangoproject.com/en/3.2/topics/db/examples/many_to_one/
     lol = models.BooleanField(default=False)
     minecraft = models.BooleanField(default=False)
     smash = models.BooleanField(default=False)
