@@ -101,6 +101,25 @@ def add_new_tags(request):
         # do stuff with the form data
         return JsonResponse({'message': 'Add tags POST request not implemented yet'})
 
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/userlogin/')
+
+
+def index(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/home_profile')
+        # return render(request, 'home_profile.html', {'name': request.user})
+    else:
+        return render(request, "home.html")
+
+
+def go_faq(request):
+    if request.user.is_authenticated:
+        return render(request, "faq.html", {'icons': 1})
+    else:
+        return render(request, "faq.html", {'icons': 0})
+      
 
 def profile_settings(request):
     # possible query parameter: ?tab, cuyos valores pueden ser {'ajustes', 'juegos', 'tags'}
@@ -126,35 +145,21 @@ def profile_settings(request):
             return redirect('/profile_settings')"""
         # else:
         if request.method == 'GET':
-            tags = PersonalTags.tags.most_common()
+            fm = PersonalTags()
+            tags = PersonalTags.objects.filter(user=User.objects.get(pk=request.user.id))
             context = {
-                'user_tags': tags
+                'user_tags': tags,
+                'form': fm
             }
-
             return render(request, 'profile_settings.html', context)
+        elif request.method == 'POST':
+            user = User.objects.get(pk=request.user.id)
+            tags = request.POST.get('tags', False)
+            tagsForm = PersonalTags(user=user, tags=tags)
+            tagsForm.save()
+            return HttpResponseRedirect('/profile_settings')
     else:
         return HttpResponseRedirect('/')
-
-
-def user_logout(request):
-    logout(request)
-    return HttpResponseRedirect('/userlogin/')
-
-
-def index(request):
-    if request.user.is_authenticated:
-        return HttpResponseRedirect('/home_profile')
-        # return render(request, 'home_profile.html', {'name': request.user})
-    else:
-        return render(request, "home.html")
-
-
-def go_faq(request):
-    if request.user.is_authenticated:
-        return render(request, "faq.html", {'icons': 1})
-    else:
-        return render(request, "faq.html", {'icons': 0})
-      
 
 def new_publication(request):
     if request.method == 'GET':  # Si estamos cargando la página
