@@ -2,6 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template import Template, Context, loader
 from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import messages
+from django.core import serializers
 from .forms import SignUpForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.shortcuts import render, redirect
@@ -89,7 +90,19 @@ def change_password(request):
 
 def update_favorite_games(request):
     if request.method == 'GET':
-        return HttpResponseRedirect('/profile_settings?tab=juegos')
+        if request.is_ajax() and request.user.is_authenticated:
+            # Get user favorites from db
+            fv_games = PersonalGames.objects.filter(user_id=User.objects.get(pk=request.user.id))
+
+            # Prepare json response
+            json_data = {}
+            if fv_games.count() == 1:
+                fv_games = fv_games.values_list('lol', 'minecraft', 'smash', 'valorant', 'overwatch')
+                json_data = serializers.serialize('json', fv_games)
+
+            return JsonResponse(json_data, status=200)
+        else:
+            return HttpResponseRedirect('/profile_settings?tab=juegos')
     elif request.method == 'POST' and request.user.is_authenticated:
         def convert_to_bool(value):
             if value in ["true", "TRUE", "True"]:
@@ -133,31 +146,20 @@ def profile_settings(request):
     # possible query parameter: ?tab, cuyos valores pueden ser {'ajustes', 'juegos', 'tags'}
     # pero es posible no recibir tab, lo que llevará a cargar la pestaña principal de esta página
     if request.user.is_authenticated:
-        """if request.method == 'POST':
-            pass_form = PasswordChangeForm(data=request.POST, user=request.user)
 
-            if pass_form.is_valid():  # password change form
-                pass_form.save()
-                update_session_auth_hash(request, pass_form.user)
-                messages.success(request, 'Password changed successfully')
-                return redirect('/profile_settings?tab=ajustes')
-            elif 'tags' in request.POST:  # tags form
-                tags = request.POST['tags']
-                user = User.objects.get(pk=request.user.id)
-                personal_tags = PersonalTags(tags=tags, user=user)
-                personal_tags.save()
-                return redirect('/profile_settings?tab=tags')
-
-            else:
-                messages.error(request, 'Unable to change your password. Invalid form.')
-            return redirect('/profile_settings')"""
-        # else:
         if request.method == 'GET':
             tags = PersonalTags.tags.most_common()
             context = {
                 'user_tags': tags
             }
 
+            fv_games = PersonalGames.objects.filter(user_id=User.objects.get(pk=request.user.id))
+            if fv_games.count() > 0:
+                context['favorite_games'] = fv_games.values()[0]
+            else:
+                context['favorite_games'] = {'lol': False, 'minecraft': False, 'smash': False, 'valorant': False,
+                                             'overwatch': False}
+            print(context['favorite_games']['lol'])
             return render(request, 'profile_settings.html', context)
     else:
         return HttpResponseRedirect('/')
