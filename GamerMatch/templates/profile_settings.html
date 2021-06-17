@@ -75,7 +75,7 @@
             <div class="content_body" >  <!--Juegos Favoritos-->
             <div>
                 <div class="item_row">
-                    <input type="checkbox" id="lol_checkbox" name="lol_game" class="star_checkbox">  <!--Checkbox-->
+                    <input type="checkbox" id="lol_checkbox" name="lol_game" class="star_checkbox" {% if favorite_games.lol %} checked {% endif %}>  <!--Checkbox-->
                     <label for="lol_checkbox" class="image_icon">
                         <img src="../static/img/lol.png">  <!--Game Icon-->
                     </label>
@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <div class="item_row">
-                    <input type="checkbox" id="minecraft_checkbox" name="minecraft_game" class="star_checkbox">  <!--Checkbox-->
+                    <input type="checkbox" id="minecraft_checkbox" name="minecraft_game" class="star_checkbox" {% if favorite_games.minecraft %} checked {% endif %}>  <!--Checkbox-->
                     <label for="minecraft_checkbox" class="image_icon">
                         <img src="../static/img/minecraft.png" >  <!--Game Icon-->
                     </label>
@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div class="item_row">
-                    <input type="checkbox" id="smash_checkbox" name="smash_game" class="star_checkbox">
+                    <input type="checkbox" id="smash_checkbox" name="smash_game" class="star_checkbox" {% if favorite_games.smash %} checked {% endif %}>
                     <label for="smash_checkbox" class="image_icon">
                         <img src="../static/img/smash.png">  <!--Game Icon-->
                     </label>
@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <div class="item_row">
-                    <input type="checkbox" id="valorant_checkbox" name="valorant_game">  <!--Checkbox-->
+                    <input type="checkbox" id="valorant_checkbox" name="valorant_game" {% if favorite_games.valorant %} checked {% endif %} class="star_checkbox">  <!--Checkbox-->
                     <label for="valorant_checkbox" class="image_icon">
                         <img src="../static/img/valorant.png">  <!--Game Icon-->
                     </label>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <div class="item_row">
-                    <input type="checkbox" id="overwatch_checkbox" name="overwatch_game">  <!--Checkbox-->
+                    <input type="checkbox" id="overwatch_checkbox" name="overwatch_game" {% if favorite_games.overwatch %} checked {% endif %} class="star_checkbox">  <!--Checkbox-->
                     <label for="overwatch_checkbox" class="image_icon">
                         <img src="../static/img/overwatch.png">  <!--Game Icon-->
                     </label>
@@ -196,34 +196,13 @@
 
         if (new_pass !== new_pass_confirm) {
             console.log("Error, la nueva contraseña no coincide al confirmarla");
+            return false;
         } else {
             // this form must reload the page, to update the session cookie, using ajax here would complicate things.
             console.log("cambiando contraseña");
             document.getElementById('change_password_form').submit();  // submit and reload.
-
-            /* let data = new FormData();
-            data.append('old_password', document.getElementsByName('old_password')[0].value);
-            data.append('new_password1', document.getElementsByName('new_password1')[0].value);
-            data.append('new_password2', document.getElementsByName('new_password2')[0].value);
-
-            let xhrequest = new XMLHttpRequest();
-            xhrequest.open('POST', "{% url 'change_password' %}");
-            xhrequest.timeout = 1000;
-            xhrequest.withCredentials = true;
-            // xhrequest.setRequestHeader("x-csrf-token", "fetch")
-            xhrequest.setRequestHeader('X-CSRFToken', csrfcookie());
-            xhrequest.onload = function (d) {
-               //let responseText = d.currentTarget.responseText;
-               alert('enviado!!, '+d.currentTarget.responseText);
-            }
-            xhrequest.onerror = function () {
-               alert('Falló el envio del formulario :c');
-            }
-            xhrequest.send(data);
-            */
         }
-        return false;
-        })
+    })
 
     // Change favorite games form
     let submit_change_fv_games_form = document.getElementById('favorite_games_form');
@@ -246,11 +225,11 @@
         xhrequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhrequest.timeout = 1000;
         xhrequest.onload = function (d) {
-            alert('response:'+d.currentTarget.responseText);
+            // alert('response:'+d.currentTarget.responseText);
             console.log(d.currentTarget.responseText);
         }
         xhrequest.onerror = function (d) {
-            alert('Failed');
+            alert('Oh no!!. Tus preferencias no pudieron ser actualizadas D:');
         }
         xhrequest.send(data);
 
