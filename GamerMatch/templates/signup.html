@@ -82,11 +82,11 @@
                 </tr>
             </table>
             <p class="error-message" id="errorMessage">
-            {% if messages %}
-            {% for message in messages %}
-            {{message}}
-            {% endfor %}
-            {% endif %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {{message}}
+                    {% endfor %}
+                {% endif %}
             </p>
         </form>
     </div>
@@ -97,5 +97,6 @@
         <button type="button" class="login big-button" onclick="location.href='../userlogin/'">Iniciar Sesión</button>
     </div>
 </div>
+<script src="{% static 'js/password_validation.js' %}"></script>
 <script src="{% static 'js/register_validate.js' %}"></script>
 {% endblock %}

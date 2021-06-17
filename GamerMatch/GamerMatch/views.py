@@ -159,7 +159,7 @@ def profile_settings(request):
             else:
                 context['favorite_games'] = {'lol': False, 'minecraft': False, 'smash': False, 'valorant': False,
                                              'overwatch': False}
-            print(context['favorite_games']['lol'])
+
             return render(request, 'profile_settings.html', context)
     else:
         return HttpResponseRedirect('/')
