@@ -190,9 +190,9 @@ def new_publication(request):
     elif request.method == 'POST':  # Si estamos recibiendo el form de registro
 
         if request.user.is_authenticated:
-            pass
+        #    pass
 
-        if True:  # Reemplazar este if con el anterior para permitir solo ingreso de user que inicio sesion
+        #if True:  # Reemplazar este if con el anterior para permitir solo ingreso de user que inicio sesion
 
             # Tomar los elementos del formulario que vienen en request.POST
             juego = request.POST['nombre_juego']
