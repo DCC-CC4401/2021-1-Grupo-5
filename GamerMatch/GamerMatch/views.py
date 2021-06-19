@@ -87,7 +87,6 @@ def change_password(request):
             messages.error(request, 'Unable to change your password. Invalid form probably because some validations.')
         return redirect('/profile_settings?tab=ajustes')
 
-
 def update_favorite_games(request):
     if request.method == 'GET':
         if request.is_ajax() and request.user.is_authenticated:
@@ -134,13 +133,37 @@ def update_favorite_games(request):
                                                valorant_game, overwatch_game]})
 
 
-def add_new_tags(request):
+def update_tags(request):
     if request.method == 'GET':
-        return HttpResponseRedirect('/profile_settings?tab=tags')
-    elif request.method == 'POST' and request.user.is_authenticated:
-        # do stuff with the form data
-        return JsonResponse({'message': 'Add tags POST request not implemented yet'})
+        if request.is_ajax() and request.user.is_authenticated:
+            # Get user favorites from db
+            fv_tags = PersonalTags.objects.filter(user_id=User.objects.get(pk=request.user.id))
 
+            # Prepare json response
+            json_data = {}
+            if fv_tags.count() == 1:
+                fv_tags = fv_tags.values_list('tags')
+                json_data = serializers.serialize('json', fv_tags)
+
+            return JsonResponse(json_data, status=200)
+        else:
+            return HttpResponseRedirect('/profile_settings?tab=tags')
+    elif request.method == 'POST' and request.user.is_authenticated:
+        # Get the data
+        tags_data = request.POST['tags_data']
+        user = User.objects.get(pk=request.user.id)
+
+        data = {"tags": tags_data}
+        PersonalTags.objects.update_or_create(user=user, defaults=data)
+
+        if request.is_ajax():
+            return JsonResponse({'message': "AJAX POST received. DB updated successfully.",
+                                 'caution': "Guys, when we're ready with this, we have to remember removing this msg",
+                                 'data_received': [tags_data]},
+                                status=200)
+
+        return JsonResponse({'message': 'POST received. Tags updated',
+                             'data_received': [tags_data]})
 
 def profile_settings(request):
     # possible query parameter: ?tab, cuyos valores pueden ser {'ajustes', 'juegos', 'tags'}
@@ -148,18 +171,23 @@ def profile_settings(request):
     if request.user.is_authenticated:
 
         if request.method == 'GET':
-            tags = PersonalTags.tags.most_common()
-            context = {
-                'user_tags': tags
-            }
+            context = {}
 
             fv_games = PersonalGames.objects.filter(user_id=User.objects.get(pk=request.user.id))
+            tags = PersonalTags.objects.filter(user_id=User.objects.get(pk=request.user.id))
             if fv_games.count() > 0:
                 context['favorite_games'] = fv_games.values()[0]
             else:
                 context['favorite_games'] = {'lol': False, 'minecraft': False, 'smash': False, 'valorant': False,
                                              'overwatch': False}
-            print(context['favorite_games']['lol'])
+            if tags.count() > 0:
+                value = tags.values()[0]
+                if value['tags'] == "":
+                    context['favorite_tags'] = {'tags' : "Ejemplo"}
+                else:
+                    context['favorite_tags'] = tags.values()[0]
+            else:
+                context['favorite_tags'] = {'tags': "Ejemplo"}
             return render(request, 'profile_settings.html', context)
     else:
         return HttpResponseRedirect('/')

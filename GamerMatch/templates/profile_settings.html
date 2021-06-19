@@ -1,11 +1,10 @@
-<<<<<<< HEAD
-=======
 {% extends "base.html" %}
 
 {% load static %}
 
 {% block style %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/profile_settings.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/tags.css' %}"/>
 {% endblock %}
 
 {% block title %} Profile settings {% endblock %}
@@ -133,143 +132,122 @@
 
     <div id="body_tags_favoritos" class="inactive_content">
         <div class="tag_favoritos_body" >  <!--Tags Favoritos-->
-            <form method="post" id="tags_form">
+            <div>
+                <p>Tus tags:</p>
+            </div>
+            <div id="error-message-tags" style="display:none">
+                <p>¡Tags actualizados!</p>
+            </div>
+            <div id='the_tags' class="simple-tags" data-simple-tags={{ favorite_tags.tags }}></div>
+            <form method="post" id="tags_form" action="{% url 'update_tags' %}">
                 {% csrf_token %}
-                <div class="tag_boxes_row">
-                    <label for="new_tags" class="tag_box_label">Nuevos tags:</label>
-                    <input type="text" data-role="tagsinput" class="tag_input" name="tags" id="new_tags">
-                    <button type="button" class="add_tag_button" id="add_tag_button">Agregar</button>
+                <div>
+                    <button type="button" id="tags-button" class="change_pass_button">Actualizar</button>
+                </div>
+                <div class="tag_boxes_row" style="display:none">
+                    <input type="text" name="tags" id="id_tags">
                 </div>
             </form>
-            <div class="tag_boxes_row">
-                <div class="tag_box_label">Tus tags: </div>
-                <div class="whiteboard">
-                    <!--
-                    <div class="sticker">
-                        <div>#flamer</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
-                    </div>
-                    <div class="sticker">
-                        <div>#challenger</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
-                    </div>
-                    <div class="sticker">
-                        <div>#help</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
-                    </div>
-                    <div class="sticker">
-                        <div>#rick</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
-                    </div>
-                    <div class="sticker">
-                        <div>#roll</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
-                    </div>
-                    <div class="sticker">
-                        <div>#xd</div> <div class="close_icon"><img alt="close-icon" src="../static/img/icon-close-512.webp"></div>
-                    </div>
-                    -->
-                </div>
-            </div>
         </div>
-
     </div>
-
 </div>
 
 <script src="{% static 'js/profile_settings_tab_manager.js' %}"> </script>
+<script src="{% static 'js/tags_script.js' %}"></script>
 <script>
-    let csrfcookie = function() {
-        let cookieValue = null,
-            name = 'csrftoken';
-        if (document.cookie && document.cookie !== '') {
-            let cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                // search in the cookies, that whoe that has 'csrftoken' in its name
-                let cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
+let csrfcookie = function() {
+    let cookieValue = null,
+        name = 'csrftoken';
+    if (document.cookie && document.cookie !== '') {
+        let cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            // search in the cookies, that whoe that has 'csrftoken' in its name
+            let cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
             }
         }
-        return cookieValue;
-    };
-    // Change password form
-    let submit_change_psw_button = document.getElementById('change_password_form_btn');
-    submit_change_psw_button.addEventListener('click', function () {
-        let new_pass = document.getElementsByName('new_password1')[0].value;
-        let new_pass_confirm = document.getElementsByName('new_password2')[0].value;
+    }
+    return cookieValue;
+};
+// Change password form
+let submit_change_psw_button = document.getElementById('change_password_form_btn');
+submit_change_psw_button.addEventListener('click', function () {
+    let new_pass = document.getElementsByName('new_password1')[0].value;
+    let new_pass_confirm = document.getElementsByName('new_password2')[0].value;
 
-        if (new_pass !== new_pass_confirm) {
-            console.log("Error, la nueva contraseña no coincide al confirmarla");
-            return false;
-        } else {
-            // this form must reload the page, to update the session cookie, using ajax here would complicate things.
-            console.log("cambiando contraseña");
-            document.getElementById('change_password_form').submit();  // submit and reload.
-        }
-    })
-
-    // Change favorite games form
-    let submit_change_fv_games_form = document.getElementById('favorite_games_form');
-    submit_change_fv_games_form.addEventListener('change', function (e) {
-        e.preventDefault()
-        /*
-        When the form changes, is instantly submited without reloading the page.
-        The form changes when a checkbox is pressed. It's like the 'like' button on social medias.
-        */
-        let data = new FormData();
-        data.append('lol_game', document.getElementById('lol_checkbox').checked);
-        data.append('minecraft_game', document.getElementById('minecraft_checkbox').checked);
-        data.append('smash_game', document.getElementById('smash_checkbox').checked);
-        data.append('overwatch_game', document.getElementById('overwatch_checkbox').checked);
-        data.append('valorant_game', document.getElementById('valorant_checkbox').checked);
-
-        let xhrequest = new XMLHttpRequest();
-        xhrequest.open('POST', "{% url 'update_favorite_games' %}");
-        xhrequest.setRequestHeader('X-CSRFToken', csrfcookie());
-        xhrequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        xhrequest.timeout = 1000;
-        xhrequest.onload = function (d) {
-            // alert('response:'+d.currentTarget.responseText);
-            console.log(d.currentTarget.responseText);
-        }
-        xhrequest.onerror = function (d) {
-            alert('Oh no!!. Tus preferencias no pudieron ser actualizadas D:');
-        }
-        xhrequest.send(data);
-
+    if (new_pass !== new_pass_confirm) {
+        // console.log("Error, la nueva contraseña no coincide al confirmarla");
         return false;
-    })
+    } else {
+        // this form must reload the page, to update the session cookie, using ajax here would complicate things.
+        // console.log("cambiando contraseña");
+        document.getElementById('change_password_form').submit();  // submit and reload.
+    }
+})
 
-    // Add tags form
-    let submit_tags_button = document.getElementById('add_tag_button');
-    submit_tags_button.addEventListener('click', function () {
-        let form = document.getElementById('tags_form');
-        if (document.getElementById('new_tags').value !== '') {
-            console.log("Se enviará la entrada");
-            /*
+// Change favorite games form
+let submit_change_fv_games_form = document.getElementById('favorite_games_form');
+submit_change_fv_games_form.addEventListener('change', function (e) {
+    e.preventDefault()
+    /*
+    When the form changes, is instantly submited without reloading the page.
+    The form changes when a checkbox is pressed. It's like the 'like' button on social medias.
+    */
+    let data = new FormData();
+    data.append('lol_game', document.getElementById('lol_checkbox').checked);
+    data.append('minecraft_game', document.getElementById('minecraft_checkbox').checked);
+    data.append('smash_game', document.getElementById('smash_checkbox').checked);
+    data.append('overwatch_game', document.getElementById('overwatch_checkbox').checked);
+    data.append('valorant_game', document.getElementById('valorant_checkbox').checked);
 
-            let xhrequest = new XMLHttpRequest();
-            xhrequest.open('POST', '/change_password');
-            xhrequest.timeout = 1000;
-            xhrequest.onload = function (d) {
-               //let responseText = d.currentTarget.responseText;
-               alert('enviado!!');
-            }
-            xhrequest.onerror = function () {
-               alert('Falló el envio del formulario :c');
-            }
-            xhrequest.send(data); */
-            // form.submit();
-        } else {
-            console.log("Error, la entrada de tags está vacía");
-        }
-        return false;
-    });
+    let xhrequest = new XMLHttpRequest();
+    xhrequest.open('POST', "{% url 'update_favorite_games' %}");
+    xhrequest.setRequestHeader('X-CSRFToken', csrfcookie());
+    xhrequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhrequest.timeout = 1000;
+    xhrequest.onload = function (d) {
+        // alert('response:'+d.currentTarget.responseText);
+        
+        //console.log(d.currentTarget.responseText);
+    }
+    xhrequest.onerror = function (d) {
+        alert('Oh no!!. Tus preferencias no pudieron ser actualizadas D:');
+    }
+    xhrequest.send(data);
 
+    return false;
+})
+
+// Change tags
+let tags_input = document.getElementById("tags-button")
+tags_input.addEventListener('click', function (e) {
+    var tags_str = document.getElementById('the_tags').getAttribute("data-simple-tags");
+    document.getElementById("id_tags").value = tags_str;
+    e.preventDefault();
+    let data = new FormData();
+    data.append('tags_data', document.getElementById('the_tags').getAttribute("data-simple-tags"));
+    let xhrequest = new XMLHttpRequest();
+    xhrequest.open('POST', "{% url 'update_tags' %}");
+    xhrequest.setRequestHeader('X-CSRFToken', csrfcookie());
+    xhrequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhrequest.timeout = 1000;
+    xhrequest.onload = function (d) {
+        // alert('response:'+d.currentTarget.responseText);
+        document.getElementById("error-message-tags").style.display = "block";
+    }
+    xhrequest.onerror = function (d) {
+        alert('Oh no! Algo salió muy mal!');
+    }
+    xhrequest.send(data);
+
+    return false;
+})
 
 </script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-{#<script src="{% static 'js/tagsinput.js'%}"></script>#}
 
 {% endblock %}
->>>>>>> 2339b59619a1e656c5d64919ac6c0b985766a1f1

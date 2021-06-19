@@ -31,7 +31,7 @@ class PersonalGames(models.Model):
 
 
 class PersonalTags(models.Model):
-    user = models.CharField(max_length=100, default='')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     tags = models.TextField(max_length=1000, default='')
     # slug = models.SlugField(unique=True, max_length=100)
     time = models.DateTimeField(auto_now=True)
