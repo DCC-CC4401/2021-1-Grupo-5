@@ -38,6 +38,9 @@ input[type="checkbox"] {
 input[type=checkbox]:not(:checked) {
     background-image: url("../img/star_off.png");
 }
+input[type=checkbox]:not(:checked):hover {
+    background-image: url("../img/star_switching_on.png");
+}
 
 input[type=checkbox]:checked {
     background-image: url("../img/star_on.png");

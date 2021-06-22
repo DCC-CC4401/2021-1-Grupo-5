@@ -1,36 +1,3 @@
-function checkPassword(str) {
-    var code, i, len;
-    let numbers = false;
-    let letters = false;
-    let invalid = false;
-    for (i = 0, len = str.length; i < len; i++) {
-        code = str.charCodeAt(i);
-        if(!(code >= 32 && code <= 126)){
-            invalid = true;
-        }
-        if (code > 47 && code < 58) {
-            numbers = true;
-        }
-        if((code > 64 && code < 91) || (code > 96 && code < 123)){
-            letters = true;
-        }
-    }
-    if(invalid){
-        return 0;
-    }
-    else if(numbers && !letters){
-        return 1;
-    }
-    else if(letters && !numbers){
-        return 2;
-    }
-    else if(str.length < 9){
-        return 3;
-    }
-    else{
-        return -1;
-    }
-};
 
 function validateForm() {
     let errorMessage = document.getElementById("errorMessage");
@@ -105,37 +72,37 @@ function validateForm() {
 }
 function setForm() {
     document.getElementById('id_username').addEventListener('keypress', function(event) {
-        if (event.keyCode == 13) {
+        if (event.keyCode === 13) {
             event.preventDefault();
             document.getElementById("fake-submit").click();
         }
     });
     document.getElementById('id_first_name').addEventListener('keypress', function(event) {
-        if (event.keyCode == 13) {
+        if (event.keyCode === 13) {
             event.preventDefault();
             document.getElementById("fake-submit").click();
         }
     });
     document.getElementById('id_last_name').addEventListener('keypress', function(event) {
-        if (event.keyCode == 13) {
+        if (event.keyCode === 13) {
             event.preventDefault();
             document.getElementById("fake-submit").click();
         }
     });
     document.getElementById('id_email').addEventListener('keypress', function(event) {
-        if (event.keyCode == 13) {
+        if (event.keyCode === 13) {
             event.preventDefault();
             document.getElementById("fake-submit").click();
         }
     });
     document.getElementById('id_password1').addEventListener('keypress', function(event) {
-        if (event.keyCode == 13) {
+        if (event.keyCode === 13) {
             event.preventDefault();
             document.getElementById("fake-submit").click();
         }
     });
     document.getElementById('id_password2').addEventListener('keypress', function(event) {
-        if (event.keyCode == 13) {
+        if (event.keyCode === 13) {
             event.preventDefault();
             document.getElementById("fake-submit").click();
         }

@@ -1,13 +1,13 @@
-from django.http import HttpResponse, JsonResponse
-from django.template import Template, Context, loader
-from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import messages
-from django.core import serializers
-from .forms import SignUpForm
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
+from django.core import serializers
+from django.http import JsonResponse
+from django.shortcuts import HttpResponseRedirect
+from django.shortcuts import render, redirect
+
+from .forms import SignUpForm
 from .models import MatchForm, PersonalGames, PersonalTags
 
 
@@ -87,6 +87,7 @@ def change_password(request):
             messages.error(request, 'Unable to change your password. Invalid form probably because some validations.')
         return redirect('/profile_settings?tab=ajustes')
 
+
 def update_favorite_games(request):
     if request.method == 'GET':
         if request.is_ajax() and request.user.is_authenticated:
@@ -119,11 +120,11 @@ def update_favorite_games(request):
 
         data = {"lol": lol_game, "minecraft": minecraft_game, "smash": smash_game,
                 "valorant": valorant_game, "overwatch": overwatch_game}
+        # Update the database
         PersonalGames.objects.update_or_create(user=user, defaults=data)
 
         if request.is_ajax():
             return JsonResponse({'message': "AJAX POST received. DB updated successfully.",
-                                 'caution': "Guys, when we're ready with this, we have to remember removing this msg",
                                  'data_received': [lol_game, minecraft_game, smash_game,
                                                    valorant_game, overwatch_game]},
                                 status=200)
@@ -165,6 +166,7 @@ def update_tags(request):
         return JsonResponse({'message': 'POST received. Tags updated',
                              'data_received': [tags_data]})
 
+
 def profile_settings(request):
     # possible query parameter: ?tab, cuyos valores pueden ser {'ajustes', 'juegos', 'tags'}
     # pero es posible no recibir tab, lo que llevará a cargar la pestaña principal de esta página
@@ -183,7 +185,7 @@ def profile_settings(request):
             if tags.count() > 0:
                 value = tags.values()[0]
                 if value['tags'] == "":
-                    context['favorite_tags'] = {'tags' : "Ejemplo"}
+                    context['favorite_tags'] = {'tags': "Ejemplo"}
                 else:
                     context['favorite_tags'] = tags.values()[0]
             else:
@@ -201,7 +203,6 @@ def user_logout(request):
 def index(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('/home_profile')
-        # return render(request, 'home_profile.html', {'name': request.user})
     else:
         return render(request, "home.html")
 
@@ -220,10 +221,6 @@ def new_publication(request):
     elif request.method == 'POST':  # Si estamos recibiendo el form de registro
 
         if request.user.is_authenticated:
-        #    pass
-
-        #if True:  # Reemplazar este if con el anterior para permitir solo ingreso de user que inicio sesion
-
             # Tomar los elementos del formulario que vienen en request.POST
             juego = request.POST['nombre_juego']
             tags = request.POST['tags']
