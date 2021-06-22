@@ -63,12 +63,34 @@ def sign_in(request):
 
 
 def home_profile(request):
-    solicitudes = MatchForm.objects.all()
-    solicitudes_user = MatchForm.objects.filter(user=User.objects.get(pk=request.user.id))
+    solicitudes 	 = MatchForm.objects.all().order_by('-time')
+    solicitudes_user = MatchForm.objects.filter(user=User.objects.get(pk=request.user.id)).order_by('-time')
+
+	# Solicitudes de juegos favoritos
+    solicitudes_fav  = []
+    fav_games = PersonalGames.objects.filter(user=User.objects.get(pk=request.user.id)) # Get jeugos favoritos del usuario
+
+    # Asegurarse de que existan fav_games
+    if len(fav_games) > 0:
+
+        fav_games = fav_games[0]
+
+        # Lista de juegos
+        juegos_bool  = [fav_games.lol, fav_games.minecraft, fav_games.smash, fav_games.valorant, fav_games.overwatch, fav_games.otros]
+        juegos_largo = ["League of Legends" , "Minecraft", "Super Smash Bros.", "Valorant", "Overwatch", "Otros"]
+        #juegos_bool  = [fav_games.lol, fav_games.minecraft, fav_games.smash, fav_games.valorant, fav_games.overwatch]
+        #juegos_largo = ["League of Legends" , "Minecraft", "Super Smash Bros.", "Valorant", "Overwatch"]
+
+        # Recuperar solicitudes favoritas
+        for i, game in enumerate(juegos_bool):
+            if game:
+                for solicitud in solicitudes:
+                    if solicitud.juego == juegos_largo[i] and solicitud.user != request.user.username:
+                        solicitudes_fav.append(solicitud)
 
     if request.user.is_authenticated:
         return render(request, 'home_profile.html',
-                      {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user": solicitudes_user})
+                      {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user": solicitudes_user, "solicitudes_fav": solicitudes_fav})
     else:
         return HttpResponseRedirect('/')
 
