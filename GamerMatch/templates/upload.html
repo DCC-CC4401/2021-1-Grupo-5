@@ -3,44 +3,47 @@
 {% load static %}
 
 {% block style %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/upload.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'css/upload.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/tags.css' %}" />
 {% endblock %}
 
 
 {% block title %} UPLOAD {% endblock %}
 
 {% block navbarButton %}
-    <div>
-        <a href={% url 'profile_settings' %}>
-            <div class="profile_icon"><img width="50" height=50" src="../static/img/profile_icon.png"
-                                           alt="profile_icon"></div>
-        </a>
-        <a href={% url 'logout' %}>
-            <div class="profile_icon"><img width="50" height="50" src="../static/img/logout_icon.png" alt="logout_icon">
-            </div>
-        </a>
-    </div>
+<div>
+    <a href={% url 'profile_settings' %}>
+        <div class="profile_icon"><img width="50" height=50" src="../static/img/profile_icon.png" alt="profile_icon">
+        </div>
+    </a>
+    <a href={% url 'logout' %}>
+        <div class="profile_icon"><img width="50" height="50" src="../static/img/logout_icon.png" alt="logout_icon">
+        </div>
+    </a>
+</div>
 
 {% endblock %}
 
 {% block content %}
 
-     <!DOCTYPE html>
-     <html lang="en">
-     <head>
-         <link rel="stylesheet" type="text/css" href="{% static 'css/upload.css' %}"/>
-        <meta charset="UTF-8">
-        <title> Nueva publicación </title>
-     </head>
-     <body>
-        <h2> Nueva publicación </h2>
-        <form method="post">
-            {% csrf_token %}
-            <div class="center">
-                <label class ="leyenda">Juego</label>
-                <select type="text" id=nombre_juego name="nombre_juego" required>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/upload.css' %}" />
+    <meta charset="UTF-8">
+    <title> Nueva publicación </title>
+</head>
+
+<body>
+    <h2> Nueva publicación </h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="center">
+            <label class="leyenda">Juego</label>
+            <select type="text" id=nombre_juego name="nombre_juego" required>
                 <option class="disabled" value=""> Elige un juego </option>
-                    <option value="Fortnite">Fortnite</option>
+                    <!-- <option value="Fortnite">Fortnite</option> -->
                     <option value="Minecraft">Minecraft</option>
                     <option value="League of Legends">League of Legends</option>
                     <option value="Overwatch">Overwatch</option>
@@ -50,22 +53,38 @@
                 </select>
             </div>
 
-            <div class="center">
-                <label class ="leyenda">Tags</label>
-                <input type="text" id="tags" name="tags" required>
-            </div>
+        <div class="center" id="some_id">
+            <label class="leyenda">Tags</label>
+            <div id='the_tags' class="simple-tags" data-simple-tags="Ejemplo"></div>
+            <input type="text" id="tags" name="tags" style="display:none" required>
+        </div>
+        <div class="center">
+            <label class="leyenda">Descripción</label>
+            <textarea id="descripcion" name="descripcion" required></textarea>
+        </div>
 
-             <div class="center">
-                <label class ="leyenda">Descripción</label>
-                <textarea id="descripcion" name="descripcion" required></textarea>
-             </div>
+        <div class="center">
+            <button class="border" id="fake-submit" type="button">Publicar</button>
+            <button class="border" id="submit" type="submit" style="display:none">Publicar</button>
+            <a href={% url 'profile' %} class="bCancel"> Cancelar </a>
+        </div>
+    </form>
+    <script src="{% static 'js/tags_script.js' %}"></script>
+    <script>
+        function update_tags() {
+            document.getElementById("tags").value = document.getElementById('the_tags').getAttribute("data-simple-tags").toLowerCase();
+            document.getElementById("submit").click();
+        }
+        let tags_input = document.getElementById("fake-submit");
+        tags_input.addEventListener('click', update_tags);
+        document.getElementById('some_id').addEventListener('keypress', function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+        }
+    });
+    </script>
+</body>
 
-             <div class="center">
-                <button class="border" id="submit" type="submit">Publicar</button>
-                <a href={% url 'profile' %} class="bCancel"> Cancelar </a>
-             </div>
-        </form>
-     </body>
-     </html>
+</html>
 
 {% endblock %}

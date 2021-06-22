@@ -68,20 +68,25 @@ def home_profile(request):
 
 	# Solicitudes de juegos favoritos
     solicitudes_fav  = []
-    fav_games = PersonalGames.objects.filter(user=User.objects.get(pk=request.user.id))[0] # Get jeugos favoritos del usuario
+    fav_games = PersonalGames.objects.filter(user=User.objects.get(pk=request.user.id)) # Get jeugos favoritos del usuario
 
-    # Lista de juegos
-    #juegos_bool  = [fav_games.lol, fav_games.minecraft, fav_games.smash, fav_games.fortnite, fav_games.valorant, fav_games.overwatch, fav_games.otros]
-    #juegos_largo = ["League of Legends" , "Minecraft", "Super Smash Bros.", "Fortnite", "Valorant", "Overwatch", "Otros"]
-    juegos_bool  = [fav_games.lol, fav_games.minecraft, fav_games.smash, fav_games.valorant, fav_games.overwatch]
-    juegos_largo = ["League of Legends" , "Minecraft", "Super Smash Bros.", "Valorant", "Overwatch"]
+    # Asegurarse de que existan fav_games
+    if len(fav_games) > 0:
 
-    # Recuperar solicitudes favoritas
-    for i, game in enumerate(juegos_bool):
-        if game:
-            for solicitud in solicitudes:
-                if solicitud.juego == juegos_largo[i] and solicitud.user != request.user.username:
-                    solicitudes_fav.append(solicitud)
+        fav_games = fav_games[0]
+
+        # Lista de juegos
+        juegos_bool  = [fav_games.lol, fav_games.minecraft, fav_games.smash, fav_games.valorant, fav_games.overwatch, fav_games.otros]
+        juegos_largo = ["League of Legends" , "Minecraft", "Super Smash Bros.", "Valorant", "Overwatch", "Otros"]
+        #juegos_bool  = [fav_games.lol, fav_games.minecraft, fav_games.smash, fav_games.valorant, fav_games.overwatch]
+        #juegos_largo = ["League of Legends" , "Minecraft", "Super Smash Bros.", "Valorant", "Overwatch"]
+
+        # Recuperar solicitudes favoritas
+        for i, game in enumerate(juegos_bool):
+            if game:
+                for solicitud in solicitudes:
+                    if solicitud.juego == juegos_largo[i] and solicitud.user != request.user.username:
+                        solicitudes_fav.append(solicitud)
 
     if request.user.is_authenticated:
         return render(request, 'home_profile.html',
@@ -99,9 +104,10 @@ def change_password(request):
         if pass_form.is_valid():  # password change form
             pass_form.save()
             update_session_auth_hash(request, pass_form.user)
-            messages.success(request, 'Password changed successfully')
+            messages.success(request, 'Su contraseña fue cambiada exitósamente.')
         else:
-            messages.error(request, 'Unable to change your password. Invalid form probably because some validations.')
+            messages.error(request, 'Ocurrió un error al cambiar la contraseña. '
+                                    'Revise que haya ingresado correctamente la antigua')
         return redirect('/profile_settings?tab=ajustes')
 
 
@@ -133,22 +139,23 @@ def update_favorite_games(request):
         smash_game = convert_to_bool(request.POST['smash_game'])
         valorant_game = convert_to_bool(request.POST['valorant_game'])
         overwatch_game = convert_to_bool(request.POST['overwatch_game'])
+        otros_game = convert_to_bool(request.POST['otros_game'])
         user = User.objects.get(pk=request.user.id)
 
         data = {"lol": lol_game, "minecraft": minecraft_game, "smash": smash_game,
-                "valorant": valorant_game, "overwatch": overwatch_game}
+                "valorant": valorant_game, "overwatch": overwatch_game, "otros": otros_game}
         # Update the database
         PersonalGames.objects.update_or_create(user=user, defaults=data)
 
         if request.is_ajax():
             return JsonResponse({'message': "AJAX POST received. DB updated successfully.",
                                  'data_received': [lol_game, minecraft_game, smash_game,
-                                                   valorant_game, overwatch_game]},
+                                                   valorant_game, overwatch_game, otros_game]},
                                 status=200)
 
         return JsonResponse({'message': 'POST received. Favorite games updated',
                              'data_received': [lol_game, minecraft_game, smash_game,
-                                               valorant_game, overwatch_game]})
+                                               valorant_game, overwatch_game, otros_game]})
 
 
 def update_tags(request):
@@ -176,7 +183,6 @@ def update_tags(request):
 
         if request.is_ajax():
             return JsonResponse({'message': "AJAX POST received. DB updated successfully.",
-                                 'caution': "Guys, when we're ready with this, we have to remember removing this msg",
                                  'data_received': [tags_data]},
                                 status=200)
 
@@ -198,7 +204,7 @@ def profile_settings(request):
                 context['favorite_games'] = fv_games.values()[0]
             else:
                 context['favorite_games'] = {'lol': False, 'minecraft': False, 'smash': False, 'valorant': False,
-                                             'overwatch': False}
+                                             'overwatch': False, 'otros': False}
             if tags.count() > 0:
                 value = tags.values()[0]
                 if value['tags'] == "":
