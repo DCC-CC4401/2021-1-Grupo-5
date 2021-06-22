@@ -13,6 +13,22 @@ let body_tags = document.getElementById('body_tags_favoritos');
 let selected_id; //"tab_ajustes_de_cuenta";  // it will be initialized later
 
 /**
+ * Changes the url query parameter without reloading the page.
+ *
+ * @param key
+ * @param value
+ * @author Our greetings to Aram Hovhannisyan on StackOverflow.
+ */
+function insertUrlParam(key, value) {
+    if (history.pushState) {
+        let searchParams = new URLSearchParams(window.location.search);
+        searchParams.set(key, value);
+        let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
+        window.history.pushState({path: newurl}, '', newurl);
+    }
+}
+
+/**
  * Action of selecting ajustes tab (change password, bad naming decision, sorry)
  * @param e
 */
@@ -26,6 +42,8 @@ function tab_ajustes(e) {
         body_ajustes.classList.remove('inactive_content');
         body_juegos.classList.add('inactive_content');
         body_tags.classList.add('inactive_content');
+
+        insertUrlParam('tab', 'ajustes');
     }
 }
 
@@ -42,6 +60,8 @@ function tab_juegos(e) {
         body_ajustes.classList.add('inactive_content');
         body_juegos.classList.remove('inactive_content');
         body_tags.classList.add('inactive_content');
+
+        insertUrlParam('tab', 'juegos');
     }
 }
 function tab_tags() {
@@ -53,6 +73,8 @@ function tab_tags() {
         body_ajustes.classList.add('inactive_content');
         body_juegos.classList.add('inactive_content');
         body_tags.classList.remove('inactive_content');
+
+        insertUrlParam('tab', 'tags');
     }
 }
 
