@@ -82,9 +82,10 @@ def change_password(request):
         if pass_form.is_valid():  # password change form
             pass_form.save()
             update_session_auth_hash(request, pass_form.user)
-            messages.success(request, 'Password changed successfully')
+            messages.success(request, 'Su contraseña fue cambiada exitósamente.')
         else:
-            messages.error(request, 'Unable to change your password. Invalid form probably because some validations.')
+            messages.error(request, 'Ocurrió un error al cambiar la contraseña. '
+                                    'Revise que haya ingresado correctamente la antigua')
         return redirect('/profile_settings?tab=ajustes')
 
 
@@ -159,7 +160,6 @@ def update_tags(request):
 
         if request.is_ajax():
             return JsonResponse({'message': "AJAX POST received. DB updated successfully.",
-                                 'caution': "Guys, when we're ready with this, we have to remember removing this msg",
                                  'data_received': [tags_data]},
                                 status=200)
 
