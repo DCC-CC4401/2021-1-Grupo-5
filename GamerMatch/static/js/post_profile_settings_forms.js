@@ -64,6 +64,7 @@ function update_favorite_games(e) {
     data.append('smash_game', document.getElementById('smash_checkbox').checked);
     data.append('overwatch_game', document.getElementById('overwatch_checkbox').checked);
     data.append('valorant_game', document.getElementById('valorant_checkbox').checked);
+    data.append('otros_game', document.getElementById('otros_checkbox').checked);
 
     let xhrequest = new XMLHttpRequest();
     xhrequest.open('POST', url_fav_games);

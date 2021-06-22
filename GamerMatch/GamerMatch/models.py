@@ -22,6 +22,7 @@ class PersonalGames(models.Model):
     smash = models.BooleanField(default=False)
     valorant = models.BooleanField(default=False)
     overwatch = models.BooleanField(default=False)
+    otros = models.BooleanField(default=False)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 

@@ -117,22 +117,23 @@ def update_favorite_games(request):
         smash_game = convert_to_bool(request.POST['smash_game'])
         valorant_game = convert_to_bool(request.POST['valorant_game'])
         overwatch_game = convert_to_bool(request.POST['overwatch_game'])
+        otros_game = convert_to_bool(request.POST['otros_game'])
         user = User.objects.get(pk=request.user.id)
 
         data = {"lol": lol_game, "minecraft": minecraft_game, "smash": smash_game,
-                "valorant": valorant_game, "overwatch": overwatch_game}
+                "valorant": valorant_game, "overwatch": overwatch_game, "otros": otros_game}
         # Update the database
         PersonalGames.objects.update_or_create(user=user, defaults=data)
 
         if request.is_ajax():
             return JsonResponse({'message': "AJAX POST received. DB updated successfully.",
                                  'data_received': [lol_game, minecraft_game, smash_game,
-                                                   valorant_game, overwatch_game]},
+                                                   valorant_game, overwatch_game, otros_game]},
                                 status=200)
 
         return JsonResponse({'message': 'POST received. Favorite games updated',
                              'data_received': [lol_game, minecraft_game, smash_game,
-                                               valorant_game, overwatch_game]})
+                                               valorant_game, overwatch_game, otros_game]})
 
 
 def update_tags(request):
@@ -181,7 +182,7 @@ def profile_settings(request):
                 context['favorite_games'] = fv_games.values()[0]
             else:
                 context['favorite_games'] = {'lol': False, 'minecraft': False, 'smash': False, 'valorant': False,
-                                             'overwatch': False}
+                                             'overwatch': False, 'otros': False}
             if tags.count() > 0:
                 value = tags.values()[0]
                 if value['tags'] == "":
