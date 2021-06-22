@@ -6,14 +6,17 @@ function Tags(element) {
   var arrayOfList;
 
   function DOMCreate() {
+    let input_div = document.getElementById("input_div")
     var ul = document.createElement("ul");
     var input = document.createElement("input");
+    input.style.backgroundColor = '#4c4c4c';
+    input.style.color = '#ffffff';
     DOMParent.appendChild(ul);
-    DOMParent.appendChild(input); // first child is <ul>
+    input_div.appendChild(input); // first child is <ul>
 
     DOMList = DOMParent.firstElementChild; // last child is <input>
 
-    DOMInput = DOMParent.lastElementChild;
+    DOMInput = input_div.lastElementChild;
   }
 
   function DOMRender() {

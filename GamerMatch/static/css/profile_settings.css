@@ -65,7 +65,7 @@ input[type=checkbox]:checked {
     margin: 0 auto;
     width: 80%;
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
 }
 
 /* Visualization of non active tabs*/
