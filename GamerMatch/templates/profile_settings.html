@@ -125,6 +125,16 @@
                         Overwatch
                     </div>
                 </div>
+                <div class="item_row">
+                    <input type="checkbox" id="otros_checkbox" name="otros_game" {% if favorite_games.otros %} checked {% endif %} class="star_checkbox">  <!--Checkbox-->
+                    <label for="otros_checkbox" class="image_icon">
+                        <img src="{% static 'img/otros.png' %}" alt="otros">  <!--Game Icon-->
+                    </label>
+
+                    <div class="description_whiteboard">  <!--Description-->
+                        Otros juegos.
+                    </div>
+                </div>
             </div>
         </div>
         </form>
