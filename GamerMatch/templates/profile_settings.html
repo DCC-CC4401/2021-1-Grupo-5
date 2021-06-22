@@ -142,15 +142,17 @@
 
     <div id="body_tags_favoritos" class="inactive_content">
         <div class="tag_favoritos_body" >  <!--Tags Favoritos-->
-            <div>
+            <form method="post" id="tags_form" action="{% url 'update_tags' %}">
+                {% csrf_token %}
+            <div id = "input_div">
                 <p>Tus tags:</p>
             </div>
             <div id="error-message-tags" style="display:none">
                 <p>¡Tags actualizados!</p>
             </div>
             <div id='the_tags' class="simple-tags" data-simple-tags={{ favorite_tags.tags }}></div>
-            <form method="post" id="tags_form" action="{% url 'update_tags' %}">
-                {% csrf_token %}
+
+
                 <div>
                     <button type="button" id="tags-button" class="change_pass_button">Actualizar</button>
                 </div>
