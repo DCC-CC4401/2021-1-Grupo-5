@@ -1,13 +1,13 @@
-from django.http import HttpResponse, JsonResponse
-from django.template import Template, Context, loader
-from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import messages
-from django.core import serializers
-from .forms import SignUpForm
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
+from django.core import serializers
+from django.http import JsonResponse
+from django.shortcuts import HttpResponseRedirect
+from django.shortcuts import render, redirect
+
+from .forms import SignUpForm
 from .models import MatchForm, PersonalGames, PersonalTags
 
 
@@ -120,11 +120,11 @@ def update_favorite_games(request):
 
         data = {"lol": lol_game, "minecraft": minecraft_game, "smash": smash_game,
                 "valorant": valorant_game, "overwatch": overwatch_game}
+        # Update the database
         PersonalGames.objects.update_or_create(user=user, defaults=data)
 
         if request.is_ajax():
             return JsonResponse({'message': "AJAX POST received. DB updated successfully.",
-                                 'caution': "Guys, when we're ready with this, we have to remember removing this msg",
                                  'data_received': [lol_game, minecraft_game, smash_game,
                                                    valorant_game, overwatch_game]},
                                 status=200)
@@ -134,12 +134,37 @@ def update_favorite_games(request):
                                                valorant_game, overwatch_game]})
 
 
-def add_new_tags(request):
+def update_tags(request):
     if request.method == 'GET':
-        return HttpResponseRedirect('/profile_settings?tab=tags')
+        if request.is_ajax() and request.user.is_authenticated:
+            # Get user favorites from db
+            fv_tags = PersonalTags.objects.filter(user_id=User.objects.get(pk=request.user.id))
+
+            # Prepare json response
+            json_data = {}
+            if fv_tags.count() == 1:
+                fv_tags = fv_tags.values_list('tags')
+                json_data = serializers.serialize('json', fv_tags)
+
+            return JsonResponse(json_data, status=200)
+        else:
+            return HttpResponseRedirect('/profile_settings?tab=tags')
     elif request.method == 'POST' and request.user.is_authenticated:
-        # do stuff with the form data
-        return JsonResponse({'message': 'Add tags POST request not implemented yet'})
+        # Get the data
+        tags_data = request.POST['tags_data']
+        user = User.objects.get(pk=request.user.id)
+
+        data = {"tags": tags_data}
+        PersonalTags.objects.update_or_create(user=user, defaults=data)
+
+        if request.is_ajax():
+            return JsonResponse({'message': "AJAX POST received. DB updated successfully.",
+                                 'caution': "Guys, when we're ready with this, we have to remember removing this msg",
+                                 'data_received': [tags_data]},
+                                status=200)
+
+        return JsonResponse({'message': 'POST received. Tags updated',
+                             'data_received': [tags_data]})
 
 
 def profile_settings(request):
@@ -148,18 +173,23 @@ def profile_settings(request):
     if request.user.is_authenticated:
 
         if request.method == 'GET':
-            tags = PersonalTags.tags.most_common()
-            context = {
-                'user_tags': tags
-            }
+            context = {}
 
             fv_games = PersonalGames.objects.filter(user_id=User.objects.get(pk=request.user.id))
+            tags = PersonalTags.objects.filter(user_id=User.objects.get(pk=request.user.id))
             if fv_games.count() > 0:
                 context['favorite_games'] = fv_games.values()[0]
             else:
                 context['favorite_games'] = {'lol': False, 'minecraft': False, 'smash': False, 'valorant': False,
                                              'overwatch': False}
-            print(context['favorite_games']['lol'])
+            if tags.count() > 0:
+                value = tags.values()[0]
+                if value['tags'] == "":
+                    context['favorite_tags'] = {'tags': "Ejemplo"}
+                else:
+                    context['favorite_tags'] = tags.values()[0]
+            else:
+                context['favorite_tags'] = {'tags': "Ejemplo"}
             return render(request, 'profile_settings.html', context)
     else:
         return HttpResponseRedirect('/')
@@ -173,7 +203,6 @@ def user_logout(request):
 def index(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('/home_profile')
-        # return render(request, 'home_profile.html', {'name': request.user})
     else:
         return render(request, "home.html")
 
@@ -192,10 +221,6 @@ def new_publication(request):
     elif request.method == 'POST':  # Si estamos recibiendo el form de registro
 
         if request.user.is_authenticated:
-        #    pass
-
-        #if True:  # Reemplazar este if con el anterior para permitir solo ingreso de user que inicio sesion
-
             # Tomar los elementos del formulario que vienen en request.POST
             juego = request.POST['nombre_juego']
             tags = request.POST['tags']
