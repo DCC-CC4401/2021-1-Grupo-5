@@ -90,7 +90,7 @@ function update_favorite_games(e) {
  * @returns {boolean} False to avoid reloading the page.
  */
 function update_personal_tags(e) {
-    document.getElementById("id_tags").value = document.getElementById('the_tags').getAttribute("data-simple-tags");
+    document.getElementById("id_tags").value = document.getElementById('the_tags').getAttribute("data-simple-tags").toLowerCase();
     e.preventDefault();
     let data = new FormData();
     data.append('tags_data', document.getElementById('the_tags').getAttribute("data-simple-tags"));
