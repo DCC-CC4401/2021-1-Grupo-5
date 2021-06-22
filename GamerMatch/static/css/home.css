@@ -35,6 +35,15 @@
     border-radius: 2px;
     cursor: pointer;
     border-radius: 15px;
+     box-shadow: 0 9px #999;
+}
+
+.login:hover {background-color: #3e8e41}
+
+.login:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
 .faq {
