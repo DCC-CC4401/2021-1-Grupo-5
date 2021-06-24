@@ -49,17 +49,24 @@
 <body>
   <div class="container">
     <!-- Nav tabs -->
-    <ul class="nav nav-tabs">
-    <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#sol1">Todas las solicitudes</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#sol2">Mis solicitudes</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#sol3">Recomendados</a>
-    </li>
-    </ul>
+    <div class="navbar">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#sol1">Todas las solicitudes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#sol2">Mis solicitudes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#sol3">Recomendados</a>
+            </li>
+        </ul>
+        <form class="d-flex" action="{% url 'search' %}" method="get">
+            <input class="form-control me-2" type="search" placeholder="Etiquetas" aria-label="Search" name="search_tag">
+            <button class="btn btn-outline-success" type="submit">Buscar</button>
+        </form>
+    </div>
+
 
     <!-- Tab panes -->
     <div class="tab-content">

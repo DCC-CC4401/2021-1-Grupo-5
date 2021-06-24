@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.core import serializers
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -66,7 +67,7 @@ def home_profile(request):
     solicitudes 	 = MatchForm.objects.all().order_by('-time')
     solicitudes_user = MatchForm.objects.filter(user=User.objects.get(pk=request.user.id)).order_by('-time')
 
-	# Solicitudes de juegos favoritos
+    # Solicitudes de juegos favoritos
     solicitudes_fav  = []
     fav_games = PersonalGames.objects.filter(user=User.objects.get(pk=request.user.id)) # Get jeugos favoritos del usuario
 
@@ -76,10 +77,9 @@ def home_profile(request):
         fav_games = fav_games[0]
 
         # Lista de juegos
-        juegos_bool  = [fav_games.lol, fav_games.minecraft, fav_games.smash, fav_games.valorant, fav_games.overwatch, fav_games.otros]
-        juegos_largo = ["League of Legends" , "Minecraft", "Super Smash Bros.", "Valorant", "Overwatch", "Otros"]
-        #juegos_bool  = [fav_games.lol, fav_games.minecraft, fav_games.smash, fav_games.valorant, fav_games.overwatch]
-        #juegos_largo = ["League of Legends" , "Minecraft", "Super Smash Bros.", "Valorant", "Overwatch"]
+        juegos_bool = [fav_games.lol, fav_games.minecraft, fav_games.smash, fav_games.valorant, fav_games.overwatch,
+                       fav_games.otros]
+        juegos_largo = ["League of Legends", "Minecraft", "Super Smash Bros.", "Valorant", "Overwatch", "Otros"]
 
         # Recuperar solicitudes favoritas
         for i, game in enumerate(juegos_bool):
@@ -91,6 +91,26 @@ def home_profile(request):
     if request.user.is_authenticated:
         return render(request, 'home_profile.html',
                       {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user": solicitudes_user, "solicitudes_fav": solicitudes_fav})
+    else:
+        return HttpResponseRedirect('/')
+
+
+def search(request):
+    tags = request.GET.get('search_tag').replace(', ', ',').split(',')
+    i = 0
+    solicitudes = []
+    if i < len(tags):
+        condition = Q(tags__contains=tags[0])
+        i += 1
+        while i < len(tags):
+            condition |= Q(tags__contains=tags[i])
+            i += 1
+
+        solicitudes = MatchForm.objects.filter(condition)
+
+    if request.user.is_authenticated:
+        return render(request, 'search.html',
+                      {'name': request.user, 'solicitudes': solicitudes})
     else:
         return HttpResponseRedirect('/')
 
