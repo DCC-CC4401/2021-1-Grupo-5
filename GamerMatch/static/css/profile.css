@@ -43,6 +43,26 @@ a:hover {
     overflow: auto;
 }
 
+#box_solicitudes {
+
+
+  height: 95%;
+    border: 3px solid green;
+    padding: 20px;
+    margin: 20px;
+    font-size: 120%;
+    font-weight: normal;
+    background: grey;
+    color: white;
+    overflow: hidden;
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-between;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #box_solicitudes #request {
 
     float: left;
