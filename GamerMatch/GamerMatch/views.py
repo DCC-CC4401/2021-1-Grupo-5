@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.core import serializers
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -63,36 +64,58 @@ def sign_in(request):
 
 
 def home_profile(request):
-    solicitudes 	 = MatchForm.objects.all().order_by('-time')
-    solicitudes_user = MatchForm.objects.filter(user=User.objects.get(pk=request.user.id)).order_by('-time')
-
-	# Solicitudes de juegos favoritos
-    solicitudes_fav  = []
-    fav_games = PersonalGames.objects.filter(user=User.objects.get(pk=request.user.id)) # Get jeugos favoritos del usuario
-
-    # Asegurarse de que existan fav_games
-    if len(fav_games) > 0:
-
-        fav_games = fav_games[0]
-
-        # Lista de juegos
-        juegos_bool  = [fav_games.lol, fav_games.minecraft, fav_games.smash, fav_games.valorant, fav_games.overwatch, fav_games.otros]
-        juegos_largo = ["League of Legends" , "Minecraft", "Super Smash Bros.", "Valorant", "Overwatch", "Otros"]
-        #juegos_bool  = [fav_games.lol, fav_games.minecraft, fav_games.smash, fav_games.valorant, fav_games.overwatch]
-        #juegos_largo = ["League of Legends" , "Minecraft", "Super Smash Bros.", "Valorant", "Overwatch"]
-
-        # Recuperar solicitudes favoritas
-        for i, game in enumerate(juegos_bool):
-            if game:
-                for solicitud in solicitudes:
-                    if solicitud.juego == juegos_largo[i] and solicitud.user != request.user.username:
-                        solicitudes_fav.append(solicitud)
-
     if request.user.is_authenticated:
+        solicitudes = MatchForm.objects.all().order_by('-time')
+        solicitudes_user = MatchForm.objects.filter(user=User.objects.get(pk=request.user.id)).order_by('-time')
+
+        # Solicitudes de juegos favoritos
+        solicitudes_fav = []
+        fav_games = PersonalGames.objects.filter(
+            user=User.objects.get(pk=request.user.id))  # Get jeugos favoritos del usuario
+
+        # Asegurarse de que existan fav_games
+        if len(fav_games) > 0:
+
+            fav_games = fav_games[0]
+
+            # Lista de juegos
+            juegos_bool = [fav_games.lol, fav_games.minecraft, fav_games.smash, fav_games.valorant, fav_games.overwatch,
+                           fav_games.otros]
+            juegos_largo = ["League of Legends", "Minecraft", "Super Smash Bros.", "Valorant", "Overwatch", "Otros"]
+
+            # Recuperar solicitudes favoritas
+            for i, game in enumerate(juegos_bool):
+                if game:
+                    for solicitud in solicitudes:
+                        if solicitud.juego == juegos_largo[i] and solicitud.user != request.user.username:
+                            solicitudes_fav.append(solicitud)
+
         return render(request, 'home_profile.html',
                       {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user": solicitudes_user, "solicitudes_fav": solicitudes_fav})
     else:
         return HttpResponseRedirect('/')
+
+
+def search(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/')
+
+    tags = request.GET.get('search_tag').replace(', ', ',').split(',')
+    tags = [tag for tag in tags if tag != '']  # remove empty tags, those are like selecting all lmao
+
+    i = 0
+    solicitudes = []  # solicitudes containing any of the tags
+    if i < len(tags):
+        condition = Q(tags__contains=tags[0])
+        i += 1
+        while i < len(tags):
+            condition |= Q(tags__contains=tags[i])
+            i += 1
+
+        solicitudes = MatchForm.objects.filter(condition)
+
+    return render(request, 'search.html',
+                  {'name': request.user, 'solicitudes': solicitudes})
 
 
 def change_password(request):
@@ -238,21 +261,22 @@ def go_faq(request):
 
 
 def new_publication(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/')
+
     if request.method == 'GET':  # Si estamos cargando la página
         return render(request, "upload.html")  # Mostrar el template
-
     elif request.method == 'POST':  # Si estamos recibiendo el form de registro
 
-        if request.user.is_authenticated:
-            # Tomar los elementos del formulario que vienen en request.POST
-            juego = request.POST['nombre_juego']
-            tags = request.POST['tags']
-            descripcion = request.POST['descripcion']
-            user = User.objects.get(pk=request.user.id)
+        # Tomar los elementos del formulario que vienen en request.POST
+        juego = request.POST['nombre_juego']
+        tags = request.POST['tags']
+        descripcion = request.POST['descripcion']
+        user = User.objects.get(pk=request.user.id)
 
-            # Crear el nuevo usuario
-            matchForm = MatchForm(juego=juego, tags=tags, descripcion=descripcion, user=user)
-            matchForm.save()
+        # Crear el nuevo usuario
+        matchForm = MatchForm(juego=juego, tags=tags, descripcion=descripcion, user=user)
+        matchForm.save()
 
-            # Redireccionar la página /tareas
-            return HttpResponseRedirect('/home_profile')
+        # Redireccionar la página /tareas
+        return HttpResponseRedirect('/home_profile')

@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views import index, sign_in, sign_up, home_profile, user_logout, new_publication, profile_settings, \
-    go_faq, change_password, update_favorite_games, update_tags
+    go_faq, change_password, update_favorite_games, update_tags, search
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,6 +24,7 @@ urlpatterns = [
     path('userlogin/', sign_in, name='userlogin'),
     path('signup/', sign_up, name='signup'),
     path('home_profile/', home_profile, name='profile'),
+    path('home_profile/search', search, name='search'),
     path('profile_settings/', profile_settings, name='profile_settings'),
     path('profile_settings/change_password/', change_password, name='change_password'),
     path('profile_settings/update_favorite_games/', update_favorite_games, name='update_favorite_games'),
