@@ -60,10 +60,8 @@ input[type=checkbox]:checked {
 
 
 .profile_nav {
-    /*background: purple;*/
-
     margin: 0 auto;
-    width: 80%;
+    width: 90%;
     display: flex;
     justify-content: left;
 }
@@ -272,3 +270,12 @@ Tags favoritos
     font-size: x-large;
     color: #ff5565;
 }
+.tus-tags-texto{
+    margin-top: 5%;
+    margin: 1em;
+   }
+.input_div{
+    margin: 1em;
+
+}
+.section_title{margin-left: 1em}
