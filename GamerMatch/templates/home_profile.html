@@ -71,12 +71,15 @@
 
                 <div id="request">
                     <div class="juego"><b>Juego:</b> {{req.juego}}</div>
-                    <div class="juego"><b>User:</b> {{req.user}}</div>
+                    <div class="juego"><b>Usuario:</b> {{req.user}}</div>
                     <div class="fecha"><b>Fecha:</b> {{req.time}}</div>
                     <div class="juego"><b>Tags:</b> {{req.tags}}</div>
                     <div class="descripcion"><b>Descripción:</b> </div>
                     <div id="box_descripcion">{{req.descripcion}}</div>
                 </div>
+
+                {% empty %}
+                	<div id="noSolicitudes"><center>No se encontraron solicitudes.</center></div>
 
                 {% endfor %}
 
@@ -92,12 +95,15 @@
 
                 <div id="request">
                     <div class="juego"><b>Juego:</b> {{req.juego}}</div>
-                    <div class="juego"><b>User:</b> {{req.user}}</div>
+                    <div class="juego"><b>Usuario:</b> {{req.user}}</div>
                     <div class="fecha"><b>Fecha:</b> {{req.time}}</div>
                     <div class="juego"><b>Tags:</b> {{req.tags}}</div>
                     <div class="descripcion"><b>Descripción:</b> </div>
                     <div id="box_descripcion">{{req.descripcion}}</div>
                 </div>
+
+                {% empty %}
+                	<div id="noSolicitudes"><center>No tienes ninguna solicitud activa.</center></div>
 
                 {% endfor %}
 
@@ -113,12 +119,15 @@
 
                 <div id="request">
                     <div class="juego"><b>Juego:</b> {{req.juego}}</div>
-                    <div class="juego"><b>User:</b> {{req.user}}</div>
+                    <div class="juego"><b>Usuario:</b> {{req.user}}</div>
                     <div class="fecha"><b>Fecha:</b> {{req.time}}</div>
                     <div class="juego"><b>Tags:</b> {{req.tags}}</div>
                     <div class="descripcion"><b>Descripción:</b> </div>
                     <div id="box_descripcion">{{req.descripcion}}</div>
                 </div>
+
+                {% empty %}
+                	<div id="noSolicitudes"><center>No hay solicitudes de tus juegos favoritos. Puedes agregar más juegos favoritos en tus preferencias del perfil.</center></div>
 
                 {% endfor %}
 
