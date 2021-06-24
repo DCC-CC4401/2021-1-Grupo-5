@@ -69,7 +69,7 @@ def home_profile(request):
         solicitudes_user = MatchForm.objects.filter(user=User.objects.get(pk=request.user.id)).order_by('-time')
 
         # Solicitudes de juegos favoritos
-        solicitudes_fav = []
+        solicitudes_juegos_fav = []
         fav_games = PersonalGames.objects.filter(
             user=User.objects.get(pk=request.user.id))  # Get jeugos favoritos del usuario
 
@@ -88,10 +88,26 @@ def home_profile(request):
                 if game:
                     for solicitud in solicitudes:
                         if solicitud.juego == juegos_largo[i] and solicitud.user != request.user.username:
-                            solicitudes_fav.append(solicitud)
+                            solicitudes_juegos_fav.append(solicitud)
+
+        # Solicitudes sugeridas por tus tags favoritos
+        tags = PersonalTags.objects.get(pk=request.user.id).tags
+        tags = tags.split(',')
+
+        i = 0
+        solicitudes_tag = []  # solicitudes containing any of the user's favorite tags
+        if i < len(tags):
+            condition = Q(tags__contains=tags[0])
+            for i in range(1, len(tags)):
+                condition |= Q(tags__contains=tags[i])
+            solicitudes_tag = MatchForm.objects.filter(condition)
+
+        # juntar solicitudes_tag con las solicitudes de juegos favoritos de manera muy ineficiente
+        solicitudes_fav = solicitudes_juegos_fav + list(set(solicitudes_tag) - set(solicitudes_juegos_fav))
 
         return render(request, 'home_profile.html',
-                      {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user": solicitudes_user, "solicitudes_fav": solicitudes_fav})
+                      {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user": solicitudes_user,
+                       "solicitudes_fav": solicitudes_fav})
     else:
         return HttpResponseRedirect('/')
 
