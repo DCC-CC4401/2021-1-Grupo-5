@@ -45,8 +45,8 @@ a:hover {
 
 #box_solicitudes {
 
-    width: 95%;
-    height: 95%;
+
+  height: 95%;
     border: 3px solid green;
     padding: 20px;
     margin: 20px;
@@ -55,6 +55,12 @@ a:hover {
     background: grey;
     color: white;
     overflow: hidden;
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-between;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #box_solicitudes #request {
@@ -70,6 +76,7 @@ a:hover {
     font-weight: normal;
     background: grey;
     color: white;
+
 }
 
 .nueva_solicitud {
@@ -101,9 +108,9 @@ a:hover {
 .nueva_solicitud span:after {
     content: '\00bb';
     right: -20px;
-  position: absolute;
-  opacity: 0;
-  top: 0;
+    position: absolute;
+    opacity: 0;
+    top: 0;
 
   transition: 0.5s;
 }
@@ -126,6 +133,15 @@ a:hover {
 .cont_nueva_sol {
 	margin-left: 40%;
 }
+
+.noSolicitudes {
+    text-align: center;
+}
+
+
+
+
+
 
 
 
