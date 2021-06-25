@@ -98,14 +98,17 @@ def home_profile(request):
         if len(tags) > 0:
             tags = tags[0].tags  # get the row of the user. There should be only one row on this query
             tags = tags.split(',')  # split the column with the tags on the row
+            tags = [tag for tag in tags if tag != '']  # remove empty tags, those are like selecting all lmao
 
             i = 0
             if i < len(tags):
                 condition = Q(tags__contains=tags[0])
                 for i in range(1, len(tags)):
                     condition |= Q(tags__contains=tags[i])
-                solicitudes_tag = MatchForm.objects.filter(condition)
 
+                solicitudes_tag = MatchForm.objects.filter(condition).exclude(user=User.objects.get(pk=request.user.id))
+            print(solicitudes_tag)
+        print(solicitudes_juegos_fav)
         # juntar solicitudes_tag con las solicitudes de juegos favoritos de manera muy ineficiente
         solicitudes_fav = solicitudes_juegos_fav + list(set(solicitudes_tag) - set(solicitudes_juegos_fav))
 
