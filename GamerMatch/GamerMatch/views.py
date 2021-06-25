@@ -91,16 +91,20 @@ def home_profile(request):
                             solicitudes_juegos_fav.append(solicitud)
 
         # Solicitudes sugeridas por tus tags favoritos
-        tags = PersonalTags.objects.get(pk=request.user.id).tags
-        tags = tags.split(',')
 
-        i = 0
         solicitudes_tag = []  # solicitudes containing any of the user's favorite tags
-        if i < len(tags):
-            condition = Q(tags__contains=tags[0])
-            for i in range(1, len(tags)):
-                condition |= Q(tags__contains=tags[i])
-            solicitudes_tag = MatchForm.objects.filter(condition)
+        tags = PersonalTags.objects.filter(user_id=User.objects.get(pk=request.user.id))
+        # Asegurarse de que existan tags
+        if len(tags) > 0:
+            tags = tags[0].tags  # get the row of the user. There should be only one row on this query
+            tags = tags.split(',')  # split the column with the tags on the row
+
+            i = 0
+            if i < len(tags):
+                condition = Q(tags__contains=tags[0])
+                for i in range(1, len(tags)):
+                    condition |= Q(tags__contains=tags[i])
+                solicitudes_tag = MatchForm.objects.filter(condition)
 
         # juntar solicitudes_tag con las solicitudes de juegos favoritos de manera muy ineficiente
         solicitudes_fav = solicitudes_juegos_fav + list(set(solicitudes_tag) - set(solicitudes_juegos_fav))
