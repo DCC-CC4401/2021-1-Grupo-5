@@ -50,33 +50,32 @@
   <div class="container">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
-    <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#sol1">Todas las solicitudes</a>
+    <li class="nav-item" id=tab_sol1>
+        <a class="nav-link{% if active_tab != 2 %} active{% endif %}" data-toggle="tab" href="#sol1">Solicitudes recomendadas</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#sol2">Mis solicitudes</a>
+    <li class="nav-item" id=tab_sol2>
+        <a class="nav-link{% if active_tab == 2 %} active{% endif %}" data-toggle="tab" href="#sol2">Mis solicitudes</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#sol3">Recomendados</a>
+    <li class="nav-item" id=tab_sol3>
+        <a class="nav-link" data-toggle="tab" href="#sol3">Todas las solicitudes</a>
     </li>
     </ul>
 
     <!-- Tab panes -->
     <div class="tab-content">
-        <div class="tab-pane container active" id="sol1">
+        <div class="tab-pane container fade" id="sol3">
 
             <div id="box_solicitudes">
 
                 {% for req in solicitudes %}
-
                 <div id="request">
-                    <div class="juego"><b>Juego:</b> {{req.juego}}</div>
-                    <div class="juego"><b>Usuario:</b> {{req.user}}</div>
-                    <div class="fecha"><b>Fecha:</b> {{req.time}}</div>
-                    <div class="juego"><b>Tags:</b> {{req.tags}}</div>
-                    <div class="descripcion"><b>Descripción:</b> </div>
-                    <div id="box_descripcion">{{req.descripcion}}</div>
-                </div>
+	                <div class="juego"><b>Juego:</b> {{req.juego}}</div>
+	                <div class="juego"><b>Usuario:</b> {{req.user}}</div>
+	                <div class="fecha"><b>Fecha:</b> {{req.time}}</div>
+	                <div class="juego"><b>Tags:</b> {{req.tags}}</div>
+	                <div class="descripcion"><b>Descripción:</b> </div>
+	                <div id="box_descripcion">{{req.descripcion}}</div>
+	            </div>
 
                 {% empty %}
                 	<div id="noSolicitudes"><center>No se encontraron solicitudes.</center></div>
@@ -87,19 +86,25 @@
 
         </div>
 
-        <div class="tab-pane container fade" id="sol2">
+        <div class="tab-pane container {% if active_tab == 2 %}active{% else %}fade{% endif %}" id="sol2">
 
             <div id="box_solicitudes">
 
                 {% for req in solicitudes_user %}
 
                 <div id="request">
-                    <div class="juego"><b>Juego:</b> {{req.juego}}</div>
-                    <div class="juego"><b>Usuario:</b> {{req.user}}</div>
-                    <div class="fecha"><b>Fecha:</b> {{req.time}}</div>
-                    <div class="juego"><b>Tags:</b> {{req.tags}}</div>
-                    <div class="descripcion"><b>Descripción:</b> </div>
-                    <div id="box_descripcion">{{req.descripcion}}</div>
+                	<form method="post">
+                		{% csrf_token %}
+                		<input type="hidden" id=id name="id" value={{req.id}}>
+                		<button class="eliminarSol"> <img src="../static/img/bin.png" alt="logout_icon"  width="30" height=></button>
+
+	                    <div class="juego"><b>Juego:</b> {{req.juego}}</div>
+	                    <div class="juego"><b>Usuario:</b> {{req.user}}</div>
+	                    <div class="fecha"><b>Fecha:</b> {{req.time}}</div>
+	                    <div class="juego"><b>Tags:</b> {{req.tags}}</div>
+	                    <div class="descripcion"><b>Descripción:</b> </div>
+	                    <div id="box_descripcion">{{req.descripcion}}</div>
+                    </form>
                 </div>
 
                 {% empty %}
@@ -111,7 +116,7 @@
 
         </div>
 
-        <div class="tab-pane container fade" id="sol3">
+        <div class="tab-pane container {% if active_tab != 2 %}active{% else %}fade{% endif %}" id="sol1">
 
             <div id="box_solicitudes">
 

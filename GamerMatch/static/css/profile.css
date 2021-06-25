@@ -131,6 +131,14 @@ a:hover {
     text-align: center;
 }
 
+.eliminarSol{
+    position: absolute;
+    right: 40;
+    top: 30;
+    background: red;
+    border-radius: 5px
+}
+
 
 
 

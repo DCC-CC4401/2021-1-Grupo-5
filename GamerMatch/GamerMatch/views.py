@@ -89,8 +89,16 @@ def home_profile(request):
                         solicitudes_fav.append(solicitud)
 
     if request.user.is_authenticated:
+        if request.method == 'POST':
+            id = request.POST['id']
+            MatchForm.objects.filter(id=id).delete()
+            solicitudes_user = MatchForm.objects.filter(user=User.objects.get(pk=request.user.id)).order_by('-time')
+            return render(request, 'home_profile.html',
+                    {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user": solicitudes_user, "solicitudes_fav": solicitudes_fav, "active_tab": 2})
+
         return render(request, 'home_profile.html',
-                      {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user": solicitudes_user, "solicitudes_fav": solicitudes_fav})
+                      {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user": solicitudes_user, "solicitudes_fav": solicitudes_fav, "active_tab": 1})
+
     else:
         return HttpResponseRedirect('/')
 
