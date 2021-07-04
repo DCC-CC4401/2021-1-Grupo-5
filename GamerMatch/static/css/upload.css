@@ -79,3 +79,38 @@ h2 {
   margin: 8px 0;
   text-align: right;
 }
+.publish{    padding: 20px;
+    background-color: #64b628;
+    border: 3px solid black;
+    font-size: 20px;
+    border-radius: 2px;
+    cursor: pointer;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;}
+.publish:hover {background-color: #3e8e41}
+
+.publish:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.cancel{
+    color: black;
+    padding: 20px;
+    background-color: #b62111;
+    border: 3px solid black;
+    font-size: 20px;
+    border-radius: 2px;
+    cursor: pointer;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;}
+.cancel:hover {background-color: #8e2839;
+    color: black;
+}
+
+.cancel:active {
+    color: black;
+  background-color: #8e0f10;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
