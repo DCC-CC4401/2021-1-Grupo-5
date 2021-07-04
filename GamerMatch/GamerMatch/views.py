@@ -64,6 +64,7 @@ def sign_in(request):
 
 
 def home_profile(request):
+
     if request.user.is_authenticated:
         solicitudes = MatchForm.objects.all().order_by('-time')
         solicitudes_user = MatchForm.objects.filter(user=User.objects.get(pk=request.user.id)).order_by('-time')
@@ -91,25 +92,37 @@ def home_profile(request):
                             solicitudes_juegos_fav.append(solicitud)
 
         # Solicitudes sugeridas por tus tags favoritos
-        tags = PersonalTags.objects.get(pk=request.user.id).tags
-        tags = tags.split(',')
 
-        i = 0
         solicitudes_tag = []  # solicitudes containing any of the user's favorite tags
-        if i < len(tags):
-            condition = Q(tags__contains=tags[0])
-            for i in range(1, len(tags)):
-                condition |= Q(tags__contains=tags[i])
-            solicitudes_tag = MatchForm.objects.filter(condition)
+        tags = PersonalTags.objects.filter(user_id=User.objects.get(pk=request.user.id))
+        # Asegurarse de que existan tags
+        if len(tags) > 0:
+            tags = tags[0].tags  # get the row of the user. There should be only one row on this query
+            tags = tags.split(',')  # split the column with the tags on the row
+            tags = [tag for tag in tags if tag != '']  # remove empty tags, those are like selecting all lmao
 
+            i = 0
+            if i < len(tags):
+                condition = Q(tags__contains=tags[0])
+                for i in range(1, len(tags)):
+                    condition |= Q(tags__contains=tags[i])
+
+                solicitudes_tag = MatchForm.objects.filter(condition).exclude(user=User.objects.get(pk=request.user.id))
+            print(solicitudes_tag)
+        print(solicitudes_juegos_fav)
         # juntar solicitudes_tag con las solicitudes de juegos favoritos de manera muy ineficiente
         solicitudes_fav = solicitudes_juegos_fav + list(set(solicitudes_tag) - set(solicitudes_juegos_fav))
+    
+        if request.method == 'POST':
+            id = request.POST['id']
+            MatchForm.objects.filter(id=id).delete()
+            solicitudes_user = MatchForm.objects.filter(user=User.objects.get(pk=request.user.id)).order_by('-time')
+            return render(request, 'home_profile.html',
+                    {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user": solicitudes_user, "solicitudes_fav": solicitudes_fav, "active_tab": 2})
 
-        return render(request, 'home_profile.html',
-                      {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user": solicitudes_user,
-                       "solicitudes_fav": solicitudes_fav})
-    else:
-        return HttpResponseRedirect('/')
+        else:
+            return render(request, 'home_profile.html',
+                      {'name': request.user, 'solicitudes': solicitudes, "solicitudes_user": solicitudes_user, "solicitudes_fav": solicitudes_fav, "active_tab": 1})
 
 
 def search(request):

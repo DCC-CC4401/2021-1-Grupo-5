@@ -45,8 +45,7 @@ a:hover {
 
 #box_solicitudes {
 
-
-  height: 95%;
+    height: 95%;
     border: 3px solid green;
     padding: 20px;
     margin: 20px;
@@ -136,6 +135,14 @@ a:hover {
 
 .noSolicitudes {
     text-align: center;
+}
+
+.eliminarSol{
+    position: absolute;
+    right: 40;
+    top: 30;
+    background: red;
+    border-radius: 5px
 }
 
 
