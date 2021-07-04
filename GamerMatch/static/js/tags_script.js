@@ -9,8 +9,12 @@ function Tags(element) {
     let input_div = document.getElementById("input_div")
     var ul = document.createElement("ul");
     var input = document.createElement("input");
-    input.style.backgroundColor = '#4c4c4c';
-    input.style.color = '#ffffff';
+    input.style.width = '30%';
+    input.style.padding = ' 6px 10px';
+    input.style.margin = ' 8px 0';
+    input.style.boxSizing  = ' border-box';
+    input.style.borderRadius   = '4px';
+    input.placeholder = 'Presione ENTER para agregar el tag escrito'
     DOMParent.appendChild(ul);
     input_div.appendChild(input); // first child is <ul>
 
