@@ -36,7 +36,7 @@
 </head>
 
 <body>
-    <h2> Nueva publicación </h2>
+    <h2> Nueva Solicitud </h2>
     <form method="post">
         {% csrf_token %}
         <div class="center">
@@ -68,9 +68,9 @@
         </div>
 
         <div class="center">
-            <button class="border" id="fake-submit" type="button">Publicar</button>
-            <button class="border" id="submit" type="submit" style="display:none">Publicar</button>
-            <a href={% url 'profile' %} class="bCancel"> Cancelar </a>
+            <button class="publish" id="fake-submit"  type="button">Publicar</button>
+            <button  id="submit" type="submit" style="display:none">Publicar</button>
+            <a href={% url 'profile' %} class="cancel"> Cancelar </a>
         </div>
     </form>
     <script src="{% static 'js/tags_script.js' %}"></script>
